@@ -65,13 +65,15 @@ n_labels = len(encoded[0])
 MACHINE LEARNING MODULES 
 """
 ''' CLASSIFICATION METHODS '''
+from joblib import dump, load
+
 # Fitting Logistic Regression to the Training set
 from sklearn.linear_model import LogisticRegression
 classifier_LR = LogisticRegression(random_state = 0)
 classifier_LR.fit(X_train, y_train)
 
-# Predicting the Test set results
-y_LR_pred = classifier_LR.predict(X_test)
+# Saving classifier (learned ML data) into file
+dump(classifier_LR, 'LR.joblib') 
 
 
 # Fitting K-NN to the Training set
@@ -79,8 +81,8 @@ from sklearn.neighbors import KNeighborsClassifier
 classifier_KNN = KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2)
 classifier_KNN.fit(X_train, y_train)
 
-# Predicting the Test set results
-y_KNN_pred = classifier_KNN.predict(X_test)
+# Saving classifier (learned ML data) into file
+dump(classifier_KNN, 'KNN.joblib') 
 
 
 #This one can take too much time to process
@@ -89,8 +91,8 @@ from sklearn.svm import SVC
 classifier_SVM = SVC(kernel = 'linear', random_state = 0)
 classifier_SVM.fit(X_train, y_train)
 
-# Predicting the Test set results
-y_SVM_pred = classifier_SVM.predict(X_test)
+# Saving classifier (learned ML data) into file
+dump(classifier_SVM, 'SVM.joblib') 
 
 
 # Fitting Kernel SVM to the Training set
@@ -98,8 +100,8 @@ from sklearn.svm import SVC
 classifier_kSVM = SVC(kernel = 'rbf', random_state = 0)
 classifier_kSVM.fit(X_train, y_train)
 
-# Predicting the Test set results
-y_kSVM_pred = classifier_kSVM.predict(X_test)
+# Saving classifier (learned ML data) into file
+dump(classifier_kSVM, 'kSVM.joblib') 
 
 
 # Fitting Naive Bayes to the Training set
@@ -107,8 +109,8 @@ from sklearn.naive_bayes import GaussianNB
 classifier_NB = GaussianNB()
 classifier_NB.fit(X_train, y_train)
 
-# Predicting the Test set results
-y_NB_pred = classifier_NB.predict(X_test)
+# Saving classifier (learned ML data) into file
+dump(classifier_NB, 'NB.joblib') 
 
 
 # Fitting Decision Tree Classification to the Training set
@@ -116,13 +118,8 @@ from sklearn.tree import DecisionTreeClassifier
 classifier_DTC = DecisionTreeClassifier(criterion = 'entropy', random_state = 0)
 classifier_DTC.fit(X_train, y_train)
 
-from joblib import dump, load
+# Saving classifier (learned ML data) into file
 dump(classifier_DTC, 'DTC.joblib') 
-
-classifier_DTC = load('DTC.joblib') 
-
-# Predicting the Test set results
-y_DTC_pred = classifier_DTC.predict(X_test)
 
 
 # Fitting Random Forest Classification to the Training set
@@ -130,8 +127,8 @@ from sklearn.ensemble import RandomForestClassifier
 classifier_RFC = RandomForestClassifier(n_estimators = 10, criterion = 'entropy', random_state = 0)
 classifier_RFC.fit(X_train, y_train)
 
-# Predicting the Test set results
-y_RFC_pred = classifier_RFC.predict(X_test)
+# Saving classifier (learned ML data) into file
+dump(classifier_RFC, 'RFC.joblib') 
 
 
 ''' CLUSTERING METHODS '''
@@ -169,25 +166,16 @@ for i in range(h_layers):
     classifier_ANN.add(Dense(output_dim = 39, init = 'uniform', activation = 'relu'))
 
 # Adding the output layer
-classifier_ANN.add(Dense(output_dim = n_labels, init = 'uniform', activation = 'sigmoid'))
+classifier_ANN.add(Dense(output_dim = n_labels, init = 'uniform', activation = 'softmax'))
 
 # Compiling the ANN
-classifier_ANN.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+classifier_ANN.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
 
 # Fitting the ANN to the Training set
 classifier_ANN.fit(X_train, encoded, batch_size = 10, nb_epoch = 10)
 
+# Saving classifier (learned ML data) into file
 classifier_ANN.save('ANN.h5')
-
-# Predicting the Test set results
-from keras.models import load_model
-classifier_ANN = load_model('ANN.h5')
-y_ANN_pred = classifier_ANN.predict(X_test)
-y_ANN_pred = (y_ANN_pred > 0.5)
-
-# Invert back to numbers
-y_ANN_pred = np.argmax(y_ANN_pred, axis = 1)
-
 
 
 ''' Inverting back categorical data '''
@@ -197,6 +185,42 @@ inverted = np.argmax(encoded, axis = 1)
 
 # Invert back labels
 y_inverted = labelEncoder_y.inverse_transform(inverted)
+
+
+"""
+PREDICTIONS
+"""
+# Load trained classifiers
+from keras.models import load_model
+
+classifier_LR = load('LR.joblib')
+classifier_KNN = load('KNN.joblib')
+classifier_SVM = load('SVM.joblib')
+classifier_kSVM = load('kSVM.joblib')
+classifier_NB = load('NB.joblib')
+classifier_RFC = load('RFC.joblib')
+classifier_DTC = load('DTC.joblib')
+
+classifier_ANN = load_model('ANN.h5')
+
+
+# Predicting the Test set results
+y_LR_pred = classifier_LR.predict(X_test)
+y_KNN_pred = classifier_KNN.predict(X_test)
+y_SVM_pred = classifier_SVM.predict(X_test)
+y_kSVM_pred = classifier_kSVM.predict(X_test)
+y_NB_pred = classifier_NB.predict(X_test)
+y_RFC_pred = classifier_RFC.predict(X_test)
+y_DTC_pred = classifier_DTC.predict(X_test)
+
+y_ANN_pred = classifier_ANN.predict(X_test)
+y_ANN_pred = (y_ANN_pred > 0.5)
+
+# Invert back to numbers
+y_ANN_pred = np.argmax(y_ANN_pred, axis = 1)
+
+from keras.models import load_model
+classifier_ANN = load_model('ANN.h5')
 
 
 """
