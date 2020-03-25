@@ -116,6 +116,11 @@ from sklearn.tree import DecisionTreeClassifier
 classifier_DTC = DecisionTreeClassifier(criterion = 'entropy', random_state = 0)
 classifier_DTC.fit(X_train, y_train)
 
+from joblib import dump, load
+dump(classifier_DTC, 'DTC.joblib') 
+
+classifier_DTC = load('DTC.joblib') 
+
 # Predicting the Test set results
 y_DTC_pred = classifier_DTC.predict(X_test)
 
@@ -172,7 +177,11 @@ classifier_ANN.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics
 # Fitting the ANN to the Training set
 classifier_ANN.fit(X_train, encoded, batch_size = 10, nb_epoch = 10)
 
+classifier_ANN.save('ANN.h5')
+
 # Predicting the Test set results
+from keras.models import load_model
+classifier_ANN = load_model('ANN.h5')
 y_ANN_pred = classifier_ANN.predict(X_test)
 y_ANN_pred = (y_ANN_pred > 0.5)
 
