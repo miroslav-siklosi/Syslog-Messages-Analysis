@@ -88,6 +88,13 @@ Research Mode
 		- RFC
 			- Import training dataset
 			- Import classifier
+	- Unsupervised
+		- K-Means
+			- Import training dataset
+			- Import classifier
+		- HC
+			- Import training dataset
+			- Import classifier
 	- Deep Learning
 		- ANN
 			- Import training dataset
