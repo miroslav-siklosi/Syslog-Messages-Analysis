@@ -47,17 +47,17 @@ if args.action == "train":
     method = methods[args.method]
     knowledge = method(data)
     if args.method in supervised:
-        output_filename = f"classifier_{args.method}.joblib"
+        output_filename = f"Data/classifier_{args.method}.joblib"
         dump(knowledge, output_filename)
     elif args.method in deepLearning:
-        output_filename = f"classifier_{args.method}.h5"
+        output_filename = f"Data/classifier_{args.method}.h5"
         knowledge.save(output_filename)
     print(f"Trained classifier save into file {output_filename}")
 else: # test
     pass
     
 
-data = import_dataset("Data/sample_data.csv")
+data = import_dataset("Datasets/sample_data.csv")
 classifier = method(data)
 
 """

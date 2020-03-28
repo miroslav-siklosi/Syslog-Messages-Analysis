@@ -30,11 +30,11 @@ CM_HC = confusion_matrix(y, y_hc)
 CM_ANN = confusion_matrix(y_test, y_ANN_pred)
 
 # Print CMs into text file
-with open("Confusion_Matrix_DTC.txt", 'w') as f:
+with open("Results/Confusion_Matrix_DTC.txt", 'w') as f:
             f.write(np.array2string(CM_DTC, separator=',', max_line_width=np.inf))
             
-with open("Confusion_Matrix_ANN.txt", 'w') as f:
+with open("Results/Confusion_Matrix_ANN.txt", 'w') as f:
             f.write(np.array2string(CM_ANN, separator=',', max_line_width=np.inf))
             
-with open("Confusion_Matrix_KMeans.txt", 'w') as f:
+with open("Results/Confusion_Matrix_KMeans.txt", 'w') as f:
             f.write(np.array2string(CM_KMeans, separator=',', max_line_width=np.inf))
