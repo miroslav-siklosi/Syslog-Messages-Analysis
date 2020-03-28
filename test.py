@@ -5,256 +5,146 @@ System Log Analysis for Anomaly Detection Using Machine Learning
 """
 
 # Importing the libraries
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-import keras
-
-
-"""
-DATA PREPROCESSING
-"""
-# Importing the dataset
-dataset = pd.read_csv('Data/sample_data.csv')
-
-# Splitting the dataset into independent and dependent variables
-X = dataset.iloc[:, list(range(4, 6)) + list(range(7, 84))].values
-y = dataset.iloc[:, 84].values
-
-# Taking care of missing and incorrect data
-SUM = 0
-MAX = 0
-COUNT = 0
-
-for i, row in enumerate(X):
-    for j in [15, 16]:
-        sx = str(float(X[i,j])).lower()
-        if  (sx != "nan" and sx != "inf"):
-            SUM = SUM + X[i,j]
-            if X[i,j] > MAX:
-                MAX = X[i,j]
-            COUNT = COUNT + 1
-
-AVARAGE = SUM/COUNT
-
-for i, row in enumerate(X):
-    for j in [15, 16]:
-        #print(i, x)
-        sx = str(float(X[i,j])).lower()
-        if  sx == "nan":
-            X[i, j] = AVARAGE    
-        if  sx == "inf":
-            X[i, j] = MAX * 10
-
-# Encoding categorical data
-from sklearn.preprocessing import LabelEncoder
-labelEncoder_y = LabelEncoder()
-y = labelEncoder_y.fit_transform(y)
-
-# Splitting the dataset into the Training set and Test set
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
-
-# Creating Dummy Variables
-from keras.utils import to_categorical
-encoded = to_categorical(y_train)
-n_labels = len(encoded[0])
-
-
-""" 
-MACHINE LEARNING MODULES 
-"""
-''' CLASSIFICATION METHODS '''
+import argparse
+import sys
 from joblib import dump, load
 
-# Fitting Logistic Regression to the Training set
-from sklearn.linear_model import LogisticRegression
-classifier_LR = LogisticRegression(random_state = 0)
-classifier_LR.fit(X_train, y_train)
+from data_preprocessing import import_dataset
 
-# Saving classifier (learned ML data) into file
-dump(classifier_LR, 'LR.joblib') 
+parser = argparse.ArgumentParser(description="Train or test.")
+parser.add_argument(
+    "--action", dest="action", choices=["train", "test"], help="action - train or test"
+)
+parser.add_argument(
+    "--method",
+    dest="method",
+    choices=["LR", "K-NN", "SVM", "kSVM", "NB", "DTC", "RFC", "K-Means", "HC", "ANN"],
+    help="type of machine learning",
+)
+parser.add_argument(
+    "--source-type",
+    dest="source_type",
+    choices=["dataset", "classifier"],
+    help="type of source data",
+)
+parser.add_argument("--source", dest="source", help="source filename")
+args = parser.parse_args()
 
+supervised = ("LR", "K-NN", "SVM", "kSVM", "NB", "DTC", "RFC")
+unsupervised = ("K-Means", "HC")
+deepLearning = ("ANN")
 
-# Fitting K-NN to the Training set
-from sklearn.neighbors import KNeighborsClassifier
-classifier_KNN = KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2)
-classifier_KNN.fit(X_train, y_train)
+methods = {"LR": method_LR, "K-NN": method_KNN, "SVM": method_SVM, "kSVM": method_kSVM,
+           "NB": method_NB, "DTC": method_DTC, "K-Means": method_KMeans,
+           "HC": method_HC, "ANN": method_ANN}
 
-# Saving classifier (learned ML data) into file
-dump(classifier_KNN, 'KNN.joblib') 
+if args.action == "train":
+    if args.method in unsupervised:
+        print("Unsupervised does not need training...exiting")
+        sys.exit()
+    
+    data = import_dataset(args.source)
+    method = methods[args.method]
+    knowledge = method(data)
+    if args.method in supervised:
+        output_filename = f"classifier_{args.method}.joblib"
+        dump(knowledge, output_filename)
+    elif args.method in deepLearning:
+        output_filename = f"classifier_{args.method}.h5"
+        knowledge.save(output_filename)
+    print(f"Trained classifier save into file {output_filename}")
+else: # test
+    pass
+    
 
-
-#This one can take too much time to process
-# Fitting SVM to the Training set
-from sklearn.svm import SVC
-classifier_SVM = SVC(kernel = 'linear', random_state = 0)
-classifier_SVM.fit(X_train, y_train)
-
-# Saving classifier (learned ML data) into file
-dump(classifier_SVM, 'SVM.joblib') 
-
-
-# Fitting Kernel SVM to the Training set
-from sklearn.svm import SVC
-classifier_kSVM = SVC(kernel = 'rbf', random_state = 0)
-classifier_kSVM.fit(X_train, y_train)
-
-# Saving classifier (learned ML data) into file
-dump(classifier_kSVM, 'kSVM.joblib') 
-
-
-# Fitting Naive Bayes to the Training set
-from sklearn.naive_bayes import GaussianNB
-classifier_NB = GaussianNB()
-classifier_NB.fit(X_train, y_train)
-
-# Saving classifier (learned ML data) into file
-dump(classifier_NB, 'NB.joblib') 
-
-
-# Fitting Decision Tree Classification to the Training set
-from sklearn.tree import DecisionTreeClassifier
-classifier_DTC = DecisionTreeClassifier(criterion = 'entropy', random_state = 0)
-classifier_DTC.fit(X_train, y_train)
-
-# Saving classifier (learned ML data) into file
-dump(classifier_DTC, 'DTC.joblib') 
-
-
-# Fitting Random Forest Classification to the Training set
-from sklearn.ensemble import RandomForestClassifier
-classifier_RFC = RandomForestClassifier(n_estimators = 10, criterion = 'entropy', random_state = 0)
-classifier_RFC.fit(X_train, y_train)
-
-# Saving classifier (learned ML data) into file
-dump(classifier_RFC, 'RFC.joblib') 
-
-
-''' CLUSTERING METHODS '''
-# K-Means Machine Learning Method
-# Fitting K-Means to the dataset
-from sklearn.cluster import KMeans
-kmeans = KMeans(n_clusters = n_labels, init = 'k-means++', random_state = 42)
-
-# Predicting the Test set results
-y_kmeans = kmeans.fit_predict(X)
-
-# Hierarchical Clustering
-# Fitting Hierarchical Clustering to the dataset
-from sklearn.cluster import AgglomerativeClustering
-hc = AgglomerativeClustering(n_clusters = n_labels, affinity = 'euclidean', linkage = 'ward')
-
-# Predicting the Test set results
-y_hc = hc.fit_predict(X)
-
-
-''' ARTIFICAL NEURAL NETWORK METHOD '''
-# Importing the Keras libraries and packages
-from keras.models import Sequential
-from keras.layers import Dense
-
-# Initialising the ANN
-classifier_ANN = Sequential()
-
-# Adding the input layer and the first hidden layer
-classifier_ANN.add(Dense(output_dim = 39, init = 'uniform', activation = 'relu', input_dim = 79))
-
-# Adding the hidden layers
-h_layers = 1
-for i in range(h_layers):
-    classifier_ANN.add(Dense(output_dim = 39, init = 'uniform', activation = 'relu'))
-
-# Adding the output layer
-classifier_ANN.add(Dense(output_dim = n_labels, init = 'uniform', activation = 'softmax'))
-
-# Compiling the ANN
-classifier_ANN.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
-
-# Fitting the ANN to the Training set
-classifier_ANN.fit(X_train, encoded, batch_size = 10, nb_epoch = 10)
-
-# Saving classifier (learned ML data) into file
-classifier_ANN.save('ANN.h5')
-
-
-''' Inverting back categorical data '''
-
-# Invert back categories
-inverted = np.argmax(encoded, axis = 1)
-
-# Invert back labels
-y_inverted = labelEncoder_y.inverse_transform(inverted)
-
+data = import_dataset("Data/sample_data.csv")
+classifier = method(data)
 
 """
-PREDICTIONS
+===============
+Research Mode
+===============
+- Train and Test
+	Choose ML method:
+	- Supervised
+		- LR
+			- Import training dataset
+			- Import classifier
+		- K-NN
+			- Import training dataset
+			- Import classifier
+		- SVM
+			- Import training dataset
+			- Import classifier
+		- kSVM
+			- Import training dataset
+			- Import classifier
+		- NB
+			- Import training dataset
+			- Import classifier
+		- DTC
+			- Import training dataset
+			- Import classifier
+		- RFC
+			- Import training dataset
+			- Import classifier
+	- Deep Learning
+		- ANN
+			- Import training dataset
+			- Import classifier
+Print Precision, Recall, F−measure and Confussion Matrix
+
+- HELP
+===============
+Production Mode
+===============
+- Import Training Data
+	Choose ML method:
+	- Supervised
+		- LR
+			- Import training dataset
+			- Import classifier
+		- K-NN
+			- Import training dataset
+			- Import classifier
+		- SVM
+			- Import training dataset
+			- Import classifier
+		- kSVM
+			- Import training dataset
+			- Import classifier
+		- NB
+			- Import training dataset
+			- Import classifier
+		- DTC
+			- Import training dataset
+			- Import classifier
+		- RFC
+			- Import training dataset
+			- Import classifier
+	- Deep Learning
+		- ANN
+			- Import training dataset
+			- Import classifier
+
+- Import Test Data
+	Choose ML method:
+	- Supervised
+		- LR (print labels in .csv file)
+		- K-NN (print labels in .csv file)
+		- SVM (print labels in .csv file)
+		- kSVM (print labels in .csv file)
+		- NB (print labels in .csv file)
+		- DTC (print labels in .csv file)
+		- RFC (print labels in .csv file)
+	- Unsupervised (Import dataset with at least 10k lines)
+		- K-Means (print labels in .csv file)
+		- HC (print labels in .csv file)
+	- Deep Learning
+		- ANN (print labels in .csv file)
+		
+- HELP
 """
-# Load trained classifiers
-from keras.models import load_model
-
-classifier_LR = load('LR.joblib')
-classifier_KNN = load('KNN.joblib')
-classifier_SVM = load('SVM.joblib')
-classifier_kSVM = load('kSVM.joblib')
-classifier_NB = load('NB.joblib')
-classifier_RFC = load('RFC.joblib')
-classifier_DTC = load('DTC.joblib')
-
-classifier_ANN = load_model('ANN.h5')
-
-
-# Predicting the Test set results
-y_LR_pred = classifier_LR.predict(X_test)
-y_KNN_pred = classifier_KNN.predict(X_test)
-y_SVM_pred = classifier_SVM.predict(X_test)
-y_kSVM_pred = classifier_kSVM.predict(X_test)
-y_NB_pred = classifier_NB.predict(X_test)
-y_RFC_pred = classifier_RFC.predict(X_test)
-y_DTC_pred = classifier_DTC.predict(X_test)
-
-y_ANN_pred = classifier_ANN.predict(X_test)
-y_ANN_pred = (y_ANN_pred > 0.5)
-
-# Invert back to numbers
-y_ANN_pred = np.argmax(y_ANN_pred, axis = 1)
-
-from keras.models import load_model
-classifier_ANN = load_model('ANN.h5')
-
-
-"""
-RESULTS COMPARISSION
-"""
-''' Confusion Matrix '''
-# Making the Confusion Matrix
-from sklearn.metrics import confusion_matrix
-
-# CM of Classification models
-CM_LR = confusion_matrix(y_test, y_LR_pred)
-CM_KNN = confusion_matrix(y_test, y_KNN_pred)
-CM_SVM = confusion_matrix(y_test, y_SVM_pred)
-CM_kSVM = confusion_matrix(y_test, y_kSVM_pred)
-CM_NB = confusion_matrix(y_test, y_NB_pred)
-CM_DTC = confusion_matrix(y_test, y_DTC_pred) 
-CM_RFC = confusion_matrix(y_test, y_RFC_pred)
-
-# CM of Clustering models
-CM_KMeans = confusion_matrix(y, y_kmeans)
-CM_HC = confusion_matrix(y, y_hc)
-
-# CM of Neural Network
-CM_ANN = confusion_matrix(y_test, y_ANN_pred)
-
-# Print CMs into text file
-with open("Confusion_Matrix_DTC.txt", 'w') as f:
-            f.write(np.array2string(CM_DTC, separator=',', max_line_width=np.inf))
-            
-with open("Confusion_Matrix_ANN.txt", 'w') as f:
-            f.write(np.array2string(CM_ANN, separator=',', max_line_width=np.inf))
-            
-with open("Confusion_Matrix_KMeans.txt", 'w') as f:
-            f.write(np.array2string(CM_KMeans, separator=',', max_line_width=np.inf))
 
 
 
