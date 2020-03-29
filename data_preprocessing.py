@@ -7,6 +7,9 @@ System Log Analysis for Anomaly Detection Using Machine Learning
 """
 # Importing the libraries
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from keras.utils import to_categorical
 
 def import_dataset(filename):
     # Importing the dataset
@@ -34,28 +37,30 @@ def import_dataset(filename):
     
     for i, row in enumerate(X):
         for j in [15, 16]:
-            #print(i, x)
             sx = str(float(X[i,j])).lower()
             if  sx == "nan":
                 X[i, j] = AVARAGE    
             if  sx == "inf":
                 X[i, j] = MAX * 10
     
-    # Encoding categorical data
-    from sklearn.preprocessing import LabelEncoder
+    # Encoding categorical data    
     labelEncoder_y = LabelEncoder()
     y = labelEncoder_y.fit_transform(y)
     
-    # Splitting the dataset into the Training set and Test set
-    from sklearn.model_selection import train_test_split
+    # Splitting the dataset into the Training set and Test set    
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
     
     # Creating Dummy Variables
-    from keras.utils import to_categorical
-    encoded = to_categorical(y_train)
-    n_labels = len(encoded[0])
+    encoded_y = to_categorical(y)
+    encoded_y_train = to_categorical(y_train)
+    n_labels_y = len(encoded_y[0])
+    n_labels_y_train = len(encoded_y_train[0])
     
-    return {"dataset": dataset, "X": X, "y": y, "X_train": X_train, "y_train": y_train,
-            "encoded": encoded, "n_labels": n_labels, 
+    return {"dataset": dataset, 
+            "X": X, "y": y, 
+            "X_train": X_train, "X_test": X_test,
+            "y_train": y_train, "y_test": y_test, 
+            "encoded_y": encoded_y, "n_labels_y": n_labels_y,
+            "encoded_y_train": encoded_y_train, "n_labels_y_train": n_labels_y_train,
             "labelEncoder_y": labelEncoder_y}
 

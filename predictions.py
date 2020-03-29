@@ -8,8 +8,12 @@ System Log Analysis for Anomaly Detection Using Machine Learning
 # Importing the libraries
 
 # Load trained classifiers
+import numpy as np
+from joblib import load
 from keras.models import load_model
+import ML_modules
 
+# Load the classifiers
 classifier_LR = load('Data/LR.joblib')
 classifier_KNN = load('Data/KNN.joblib')
 classifier_SVM = load('Data/SVM.joblib')
@@ -23,7 +27,7 @@ classifier_ANN = load_model('Data/ANN.h5')
 
 # Predicting the Test set results
 # Supervised
-y_LR_pred = classifier_LR.predict(X_test)
+y_LR_pred = classifier_LR.predict(data["X_test"])
 y_KNN_pred = classifier_KNN.predict(X_test)
 y_SVM_pred = classifier_SVM.predict(X_test)
 y_kSVM_pred = classifier_kSVM.predict(X_test)
@@ -38,14 +42,14 @@ y_ANN_pred = (y_ANN_pred > 0.5)
 # Invert back to numbers
 y_ANN_pred = np.argmax(y_ANN_pred, axis = 1)
 
-from keras.models import load_model
-classifier_ANN = load_model('ANN.h5')
 
 
 ''' Inverting back categorical data '''
 
 # Invert back categories
-inverted = np.argmax(data["encoded"], axis = 1)
+invert_y = np.argmax(data["encoded_y"], axis = 1)
+invert_y_train = np.argmax(data["encoded_y_train"], axis = 1)
 
 # Invert back labels
-y_inverted = data["labelEncoder_y"].inverse_transform(inverted)
+y_inverted = data["labelEncoder_y"].inverse_transform(invert_y)
+y_train_inverted = data["labelEncoder_y"].inverse_transform(invert_y_train)
