@@ -61,6 +61,13 @@ data = import_dataset("Datasets/sample_data.csv")
 classifier = method(data)
 
 """
+Flag PROD or RESEARCH -> Change input variables (X and y) accordingly
+in scripts ML_modules.py and predictions.py.
+
+Output of PROD Mode - .csv file with X and y(predicted) merged
+Output of RESEARCH Mode - Accuracies etc.
+
+
 ===============
 Research Mode
 ===============
