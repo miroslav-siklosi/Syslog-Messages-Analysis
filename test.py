@@ -7,161 +7,188 @@ System Log Analysis for Anomaly Detection Using Machine Learning
 # Importing the libraries
 import argparse
 import sys
+import numpy as np
+import ML_modules as ML
 from joblib import dump, load
-
+from sklearn.metrics import confusion_matrix
 from data_preprocessing import import_dataset
 
-parser = argparse.ArgumentParser(description="Train or test.")
-parser.add_argument(
-    "--action", dest="action", choices=["train", "test"], help="action - train or test"
+# Create parser
+methods_flags = (
+    "LR",
+    "K-NN",
+    "SVM",
+    "kSVM",
+    "NB",
+    "DTC",
+    "RFC",
+    "K-Means",
+    "HC",
+    "ANN",
 )
-parser.add_argument(
-    "--method",
-    dest="method",
-    choices=["LR", "K-NN", "SVM", "kSVM", "NB", "DTC", "RFC", "K-Means", "HC", "ANN"],
-    help="type of machine learning",
-)
-parser.add_argument(
-    "--source-type",
-    dest="source_type",
-    choices=["dataset", "classifier"],
-    help="type of source data",
-)
-parser.add_argument("--source", dest="source", help="source filename")
+
+parser = argparse.ArgumentParser(prog="PROG.py")
+parser.add_argument("--mode", dest="mode", choices=["research", "prod"], required=True)
+parser.add_argument("--command", dest="command", choices=["train", "test", "trainandtest"], required=True)
+parser.add_argument("--method", dest="method", choices=methods_flags, required=True)
+parser.add_argument("--source", dest="source", required=True)
+
 args = parser.parse_args()
+
+# TODO remove before publishing
+print(args.command)
+print(args.mode)
+print(args.method)
+print(args.source)
+
+def save_classifier(classifier, method):
+    if method in supervised:
+        output_filename = f"classifiers/classifier_{method}.joblib"
+        dump(classifier, output_filename)
+    elif method in deepLearning:
+        output_filename = f"classifiers/classifier_{method}.h5"
+        classifier.save(output_filename)
+    return output_filename
+
+
+def is_dataset_source(filename):
+    filename = filename.lower()
+    if filename.endswith(".csv"):
+        return True
+    elif filename.endswith(".joblib"):
+        return False
+    else:
+        print(f"Unknown file extension on file {filename}")
+        sys.exit(1)
 
 supervised = ("LR", "K-NN", "SVM", "kSVM", "NB", "DTC", "RFC")
 unsupervised = ("K-Means", "HC")
 deepLearning = ("ANN")
 
-methods = {"LR": method_LR, "K-NN": method_KNN, "SVM": method_SVM, "kSVM": method_kSVM,
-           "NB": method_NB, "DTC": method_DTC, "K-Means": method_KMeans,
-           "HC": method_HC, "ANN": method_ANN}
+methods = {"LR": ML.method_LR, "K-NN": ML.method_KNN, "SVM":  ML.method_SVM, "kSVM":  ML.method_kSVM,
+           "NB": ML.method_NB, "DTC":  ML.method_DTC, "RFC":  ML.method_RFC, "K-Means":  ML.method_KMeans,
+           "HC": ML.method_HC, "ANN":  ML.method_ANN}
 
-if args.action == "train":
-    if args.method in unsupervised:
-        print("Unsupervised does not need training...exiting")
-        sys.exit()
+if args.mode == "research":
+
+    if args.command == "train":
+        if args.method in unsupervised:
+            print("Unsupervised does not need training...exiting")
+            sys.exit(1)
+        
+        dataset_source = is_dataset_source(args.source)
+        if dataset_source:
+            data = import_dataset(args.source, split=False)
+            method = methods[args.method]
+            classifier = method(data)
+        else: # classifier
+            classifier = load(args.source)
+        output_filename = save_classifier(classifier, args.method)
+        print(f"Trained classifier saved into file {output_filename}")
+    elif args.command == "test": # test
+        if not is_dataset_source(args.source):
+            print(f"{args.source} is not dataset with extension .csv")
+            sys.exit(1)
     
-    data = import_dataset(args.source)
-    method = methods[args.method]
-    knowledge = method(data)
-    if args.method in supervised:
-        output_filename = f"Data/classifier_{args.method}.joblib"
-        dump(knowledge, output_filename)
-    elif args.method in deepLearning:
-        output_filename = f"Data/classifier_{args.method}.h5"
-        knowledge.save(output_filename)
-    print(f"Trained classifier save into file {output_filename}")
-else: # test
-    pass
+        data = import_dataset(args.source, split=False)
+        if args.method in unsupervised:
+            method = methods[args.method]
+            y_pred = method(data)
+        
+            CM = confusion_matrix(data["y_test"], y_pred)
+            
+            # TODO print results
+            
+        else: # supervised, deeplearning
+            classifier = load(f"classifiers/classifier_{args.method}.joblib")
+            y_pred = classifier.predict(data["X_test"])
+ 
+            if args.method in deepLearning:
+                y_pred = (y_pred > 0.5)
+                # Invert back to numbers
+                y_pred = np.argmax(y_pred, axis = 1)
+            
+            CM = confusion_matrix(data["y_test"], y_pred)
+        
+            # TODO print results
+        
+    else: # trainandtest
+        if not is_dataset_source(args.source):
+                print(f"{args.source} is not dataset with extension .csv")
+                sys.exit(1)
+
+        if args.method in unsupervised:
+            data = import_dataset(args.source, split=False)
+            method = methods[args.method]
+            y_pred = method(data)
+        
+            CM = confusion_matrix(data["y_test"], y_pred)
+            
+            # TODO print results
+        
+        else: # supervised, deeplearning
+            data = import_dataset(args.source, split=True)
+            method = methods[args.method]
+            classifier = method(data) 
+            y_pred = classifier.predict(data["X_test"])
+ 
+            if args.method in deepLearning:
+                y_pred = (y_pred > 0.5)
+                # Invert back to numbers
+                y_pred = np.argmax(y_pred, axis = 1)
+            
+            CM = confusion_matrix(data["y_test"], y_pred)
+            
+            # TODO print results
+        """
+        ''' Inverting back categorical data '''
+        # Invert back categories
+        invert_y = np.argmax(data["encoded_y"], axis = 1)
+        invert_y_train = np.argmax(data["encoded_y_train"], axis = 1)        
+        # Invert back labels
+        y_inverted = data["labelEncoder_y"].inverse_transform(invert_y)
+        y_train_inverted = data["labelEncoder_y"].inverse_transform(invert_y_train)
+        """
+else: # prod
+    if args.command == "train":
+        if args.method in unsupervised:
+            print("Unsupervised does not need training...exiting")
+            sys.exit(1)
+        
+        dataset_source = is_dataset_source(args.source)
+        if dataset_source:
+            data = import_dataset(args.source, split=False)
+            method = methods[args.method]
+            classifier = method(data)
+        else: # classifier
+            classifier = load(args.source)
+        output_filename = save_classifier(classifier, args.method)
+        print(f"Trained classifier saved into file {output_filename}")
+    elif args.command == "test": # test
+        if not is_dataset_source(args.source):
+            print(f"{args.source} is not dataset with extension .csv")
+            sys.exit(1)
     
+        data = import_dataset(args.source, split=False)
+        if args.method in unsupervised:
+            method = methods[args.method]
+            y_pred = method(data)
+    
+            # TODO print to command line
+            
+        else: # supervised, deeplearning
+            classifier = load(f"classifiers/classifier_{args.method}.joblib")
+            y_pred = classifier.predict(data["X_test"])
+ 
+            if args.method in deepLearning:
+                y_pred = (y_pred > 0.5)
+                # Invert back to numbers
+                y_pred = np.argmax(y_pred, axis = 1)
+        
+            # TODO print to command line
 
-data = import_dataset("Datasets/sample_data.csv")
-classifier = method(data)
-
-"""
-Flag PROD or RESEARCH -> Change input variables (X and y) accordingly
-in scripts ML_modules.py and predictions.py.
-
-Output of PROD Mode - .csv file with X and y(predicted) merged
-Output of RESEARCH Mode - Accuracies etc.
-
-
-===============
-Research Mode
-===============
-- Train and Test
-	Choose ML method:
-	- Supervised
-		- LR
-			- Import training dataset
-			- Import classifier
-		- K-NN
-			- Import training dataset
-			- Import classifier
-		- SVM
-			- Import training dataset
-			- Import classifier
-		- kSVM
-			- Import training dataset
-			- Import classifier
-		- NB
-			- Import training dataset
-			- Import classifier
-		- DTC
-			- Import training dataset
-			- Import classifier
-		- RFC
-			- Import training dataset
-			- Import classifier
-	- Unsupervised
-		- K-Means
-			- Import training dataset
-			- Import classifier
-		- HC
-			- Import training dataset
-			- Import classifier
-	- Deep Learning
-		- ANN
-			- Import training dataset
-			- Import classifier
-Print Precision, Recall, F−measure and Confussion Matrix
-
-- HELP
-===============
-Production Mode
-===============
-- Import Training Data
-	Choose ML method:
-	- Supervised
-		- LR
-			- Import training dataset
-			- Import classifier
-		- K-NN
-			- Import training dataset
-			- Import classifier
-		- SVM
-			- Import training dataset
-			- Import classifier
-		- kSVM
-			- Import training dataset
-			- Import classifier
-		- NB
-			- Import training dataset
-			- Import classifier
-		- DTC
-			- Import training dataset
-			- Import classifier
-		- RFC
-			- Import training dataset
-			- Import classifier
-	- Deep Learning
-		- ANN
-			- Import training dataset
-			- Import classifier
-
-- Import Test Data
-	Choose ML method:
-	- Supervised
-		- LR (print labels in .csv file)
-		- K-NN (print labels in .csv file)
-		- SVM (print labels in .csv file)
-		- kSVM (print labels in .csv file)
-		- NB (print labels in .csv file)
-		- DTC (print labels in .csv file)
-		- RFC (print labels in .csv file)
-	- Unsupervised (Import dataset with at least 10k lines)
-		- K-Means (print labels in .csv file)
-		- HC (print labels in .csv file)
-	- Deep Learning
-		- ANN (print labels in .csv file)
-		
-- HELP
-"""
-
-
-
-
+    else: # trainandtest
+        print("trainandtest is possible only in research mode")
+        sys.exit(1)
 
 

@@ -112,6 +112,14 @@ def matrix_Label_Results(matrix, label):
     Fscore = matrix_Label_Fscore(matrix, label)
     return {"Precision": precision, "Sensitivity": sensitivity,
               "Specificity": specificity, "F-Score": Fscore}
+'''
+def matrix_Results(matrix):
+    precision = matrix_Sum_Diag / (matrix_Sum_Diag + matrix_Sum_Except_Diag)
+    sensitivity = matrix_Label_Sensitivity(matrix, label)
+    specificity = matrix_Label_Specificity(matrix, label)
+    Fscore = matrix_Label_Fscore(matrix, label)
+    return {"Precision": precision, "Sensitivity": sensitivity,
+              "Specificity": specificity, "F-Score": Fscore}'''
 
 print('Results of model DTC and Label 0 are', matrix_Label_Results(CM_DTC, 0))
 print('Results of model ANN and Label 0 are', matrix_Label_Results(CM_ANN, 0))

@@ -11,7 +11,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
 
-def import_dataset(filename):
+def import_dataset(filename, split):
     # Importing the dataset
     dataset = pd.read_csv(filename)
     
@@ -20,6 +20,7 @@ def import_dataset(filename):
     y = dataset.iloc[:, 84].values
     
     # Taking care of missing and incorrect data
+    # TODO: Standardize this part
     SUM = 0
     MAX = 0
     COUNT = 0
@@ -47,8 +48,14 @@ def import_dataset(filename):
     labelEncoder_y = LabelEncoder()
     y = labelEncoder_y.fit_transform(y)
     
-    # Splitting the dataset into the Training set and Test set    
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
+    # Splitting the dataset into the Training set and Test set   
+    if split:
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
+    else:
+        X_train = X
+        X_test = X
+        y_train = y
+        y_test = y
     
     # Creating Dummy Variables
     encoded_y = to_categorical(y)
