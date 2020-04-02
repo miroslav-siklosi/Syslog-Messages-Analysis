@@ -29,6 +29,10 @@ CM_HC = confusion_matrix(y, y_hc)
 # CM of Neural Network
 CM_ANN = confusion_matrix(y_test, y_ANN_pred)
 
+
+
+
+
 # Print CMs into text file
 with open("Results/Confusion_Matrix_DTC.txt", 'w') as f:
             f.write(np.array2string(CM_DTC, separator=',', max_line_width=np.inf))

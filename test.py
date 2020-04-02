@@ -8,9 +8,11 @@ System Log Analysis for Anomaly Detection Using Machine Learning
 import argparse
 import sys
 import numpy as np
+import pandas as pd
 import ML_modules as ML
 from joblib import dump, load
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from data_preprocessing import import_dataset
 
 # Create parser
@@ -60,6 +62,23 @@ def is_dataset_source(filename):
     else:
         print(f"Unknown file extension on file {filename}")
         sys.exit(1)
+
+def metrics(matrix, method):
+    # accuracy: (tp + tn) / (p + n)
+    accuracy = accuracy_score(data["y_test"], y_pred)
+    #print(f"Accuracy of Machine Learning method {args.method} is", accuracy)
+    # precision tp / (tp + fp)
+    precision = precision_score(data["y_test"], y_pred)
+    #print(f"Precision of Machine Learning method {args.method} is", precision)
+    # recall: tp / (tp + fn)
+    recall = recall_score(data["y_test"], y_pred)
+    #print(f"Recall of Machine Learning method {args.method} is", recall)
+    # f1: 2 tp / (2 tp + fp + fn)
+    f1 = f1_score(data["y_test"], y_pred)
+    #print(f"F1-Score of Machine Learning method {args.method} is", f1)
+    
+    return {"accuracy": accuracy, "precision": precision, "recall": recall,
+              "F-Score": f1}
 
 supervised = ("LR", "K-NN", "SVM", "kSVM", "NB", "DTC", "RFC")
 unsupervised = ("K-Means", "HC")
@@ -111,6 +130,24 @@ if args.mode == "research":
             CM = confusion_matrix(data["y_test"], y_pred)
         
             # TODO print results
+            print(f"Accuracy of Machine Learning method {args.method} is", metrics.accuracy)
+            print(f"Precision of Machine Learning method {args.method} is", metrics.precision)
+            print(f"Recall of Machine Learning method {args.method} is", metrics.recall)
+            print(f"F1-Score of Machine Learning method {args.method} is", metrics.f1)
+            
+            
+            # accuracy: (tp + tn) / (p + n)
+            accuracy = accuracy_score(data["y_test"], y_pred)
+            print(f"Accuracy of Machine Learning method {args.method} is", accuracy)
+            # precision tp / (tp + fp)
+            precision = precision_score(data["y_test"], y_pred)
+            print(f"Precision of Machine Learning method {args.method} is", precision)
+            # recall: tp / (tp + fn)
+            recall = recall_score(data["y_test"], y_pred)
+            print(f"Recall of Machine Learning method {args.method} is", recall)
+            # f1: 2 tp / (2 tp + fp + fn)
+            f1 = f1_score(data["y_test"], y_pred)
+            print(f"F-Score of Machine Learning method {args.method} is", f1)
         
     else: # trainandtest
         if not is_dataset_source(args.source):
@@ -125,6 +162,19 @@ if args.mode == "research":
             CM = confusion_matrix(data["y_test"], y_pred)
             
             # TODO print results
+            
+            # accuracy: (tp + tn) / (p + n)
+            accuracy = accuracy_score(data["y_test"], y_pred)
+            print(f"Accuracy of Machine Learning method {args.method} is", accuracy)
+            # precision tp / (tp + fp)
+            precision = precision_score(data["y_test"], y_pred)
+            print(f"Precision of Machine Learning method {args.method} is", precision)
+            # recall: tp / (tp + fn)
+            recall = recall_score(data["y_test"], y_pred)
+            print(f"Recall of Machine Learning method {args.method} is", recall)
+            # f1: 2 tp / (2 tp + fp + fn)
+            f1 = f1_score(data["y_test"], y_pred)
+            print(f"F1-Score of Machine Learning method {args.method} is", f1)
         
         else: # supervised, deeplearning
             data = import_dataset(args.source, split=True)
@@ -140,6 +190,25 @@ if args.mode == "research":
             CM = confusion_matrix(data["y_test"], y_pred)
             
             # TODO print results
+            '''print(f"Accuracy of Machine Learning method {args.method} is", metrics.accuracy)
+            print(f"Precision of Machine Learning method {args.method} is", metrics.precision)
+            print(f"Recall of Machine Learning method {args.method} is", metrics.recall)
+            print(f"F1-Score of Machine Learning method {args.method} is", metrics.f1)'''
+            
+            
+            # accuracy: (tp + tn) / (p + n)
+            accuracy = accuracy_score(data["y_test"], y_pred)
+            print(f"Accuracy of Machine Learning method {args.method} is", accuracy)
+            # precision tp / (tp + fp)
+            precision = precision_score(data["y_test"], y_pred)
+            print(f"Precision of Machine Learning method {args.method} is", precision)
+            # recall: tp / (tp + fn)
+            recall = recall_score(data["y_test"], y_pred)
+            print(f"Recall of Machine Learning method {args.method} is", recall)
+            # f1: 2 tp / (2 tp + fp + fn)
+            f1 = f1_score(data["y_test"], y_pred)
+            print(f"F1-Score of Machine Learning method {args.method} is", f1)
+            
         """
         ''' Inverting back categorical data '''
         # Invert back categories
@@ -186,6 +255,12 @@ else: # prod
                 y_pred = np.argmax(y_pred, axis = 1)
         
             # TODO print to command line
+            '''frames = [data["X_test"], y_pred]
+            labelled_dataset = pd.concat(frames)
+            with open(f"Results/{args.method}_labelled.csv", 'w') as f:
+                f.write(np.array2string(labelled_dataset))
+                #f.write(np.array2string(args.method, separator=',', max_line_width=np.inf))
+            print(f"Labelled dataset printed out to Results/{args.method}_labelled.csv")'''
 
     else: # trainandtest
         print("trainandtest is possible only in research mode")
