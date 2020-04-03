@@ -122,7 +122,7 @@ def method_ANN(data):
     classifier_ANN.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
     
     # Fitting the ANN to the Training set
-    classifier_ANN.fit(data["X_train"], data["encoded_y_train"], batch_size = 10, nb_epoch = 10)
+    classifier_ANN.fit(data["X_train"], data["encoded_y_train"], batch_size = 10, epochs = 10)
     
     return classifier_ANN
 
