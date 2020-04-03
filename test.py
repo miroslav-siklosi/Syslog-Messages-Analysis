@@ -14,6 +14,7 @@ from joblib import dump, load
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from data_preprocessing import import_dataset
+from keras.models import load_model
 
 # Create parser
 methods_flags = (
@@ -119,21 +120,23 @@ if args.mode == "research":
             # TODO print results
             
         else: # supervised, deeplearning
-            classifier = load(f"classifiers/classifier_{args.method}.joblib")
-            y_pred = classifier.predict(data["X_test"])
- 
             if args.method in deepLearning:
+                classifier = load_model(f"classifiers/classifier_{args.method}.h5")
+                y_pred = classifier.predict(data["X_test"])
                 y_pred = (y_pred > 0.5)
                 # Invert back to numbers
                 y_pred = np.argmax(y_pred, axis = 1)
-            
+            else:
+                classifier = load(f"classifiers/classifier_{args.method}.joblib")
+                y_pred = classifier.predict(data["X_test"])
+                
             CM = confusion_matrix(data["y_test"], y_pred)
         
             # TODO print results
-            print(f"Accuracy of Machine Learning method {args.method} is", metrics.accuracy)
+            '''print(f"Accuracy of Machine Learning method {args.method} is", metrics.accuracy)
             print(f"Precision of Machine Learning method {args.method} is", metrics.precision)
             print(f"Recall of Machine Learning method {args.method} is", metrics.recall)
-            print(f"F1-Score of Machine Learning method {args.method} is", metrics.f1)
+            print(f"F1-Score of Machine Learning method {args.method} is", metrics.f1)'''
             
             
             # accuracy: (tp + tn) / (p + n)
