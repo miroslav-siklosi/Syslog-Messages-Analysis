@@ -36,13 +36,34 @@ parser.add_argument("--command", dest="command", choices=["train", "test", "trai
 parser.add_argument("--method", dest="method", choices=methods_flags, required=True)
 parser.add_argument("--source", dest="source", required=True)
 
-args = parser.parse_args()
+args = parser.parse_args(["--mode", "prod", "--method", "kSVM", "--command", "test", "--source", "Datasets\sample_data.csv"])
+#args = parser.parse_args()
 
 # TODO remove before publishing
 print(args.command)
 print(args.mode)
 print(args.method)
 print(args.source)
+
+def print_metrics(method, data, y_pred):
+    # accuracy: (tp + tn) / (p + n)
+    accuracy = accuracy_score(data["y_test"], y_pred)
+    print(f"Accuracy of Machine Learning method {method} is", accuracy)
+    # precision tp / (tp + fp)
+    precision = precision_score(data["y_test"], y_pred)
+    print(f"Precision of Machine Learning method {method} is", precision)
+    # recall: tp / (tp + fn)
+    recall = recall_score(data["y_test"], y_pred)
+    print(f"Recall of Machine Learning method {method} is", recall)
+    # f1: 2 tp / (2 tp + fp + fn)
+    f1 = f1_score(data["y_test"], y_pred)
+    print(f"F1-Score of Machine Learning method {method} is", f1)
+
+
+supervised = ("LR", "K-NN", "SVM", "kSVM", "NB", "DTC", "RFC")
+unsupervised = ("K-Means", "HC")
+deepLearning = ("ANN")
+
 
 def save_classifier(classifier, method):
     if method in supervised:
@@ -58,32 +79,33 @@ def is_dataset_source(filename):
     filename = filename.lower()
     if filename.endswith(".csv"):
         return True
-    elif filename.endswith(".joblib"):
+    elif filename.endswith(".joblib") or filename.endswith(".h5"):
         return False
     else:
-        print(f"Unknown file extension on file {filename}")
+        print(f"Invalid file extension on file {filename}")
         sys.exit(1)
-
-def metrics(matrix, method):
-    # accuracy: (tp + tn) / (p + n)
-    accuracy = accuracy_score(data["y_test"], y_pred)
-    #print(f"Accuracy of Machine Learning method {args.method} is", accuracy)
-    # precision tp / (tp + fp)
-    precision = precision_score(data["y_test"], y_pred)
-    #print(f"Precision of Machine Learning method {args.method} is", precision)
-    # recall: tp / (tp + fn)
-    recall = recall_score(data["y_test"], y_pred)
-    #print(f"Recall of Machine Learning method {args.method} is", recall)
-    # f1: 2 tp / (2 tp + fp + fn)
-    f1 = f1_score(data["y_test"], y_pred)
-    #print(f"F1-Score of Machine Learning method {args.method} is", f1)
-    
-    return {"accuracy": accuracy, "precision": precision, "recall": recall,
-              "F-Score": f1}
-
-supervised = ("LR", "K-NN", "SVM", "kSVM", "NB", "DTC", "RFC")
-unsupervised = ("K-Means", "HC")
-deepLearning = ("ANN")
+        
+def load_classifier(filename):
+    filepath = filename.lower()
+    try:
+        if filepath.endswith(".joblib"):
+            if args.method not in supervised:
+                print(f"Invalid classifier type for the {args.method} learning method")
+                sys.exit(1)
+            
+            return load(filename)
+        elif filepath.endswith(".h5"):
+            if args.method not in deepLearning:
+                print(f"Invalid classifier type for the {args.method} learning method")
+                sys.exit(1)
+            
+            return load_model(filename)
+        else:
+            print("Classifier with unknown extension")
+            sys.exit(1)
+    except FileNotFoundError:
+        print(f"{filepath} was not found!")
+        sys.exit(1)
 
 methods = {"LR": ML.method_LR, "K-NN": ML.method_KNN, "SVM":  ML.method_SVM, "kSVM":  ML.method_kSVM,
            "NB": ML.method_NB, "DTC":  ML.method_DTC, "RFC":  ML.method_RFC, "K-Means":  ML.method_KMeans,
@@ -102,7 +124,7 @@ if args.mode == "research":
             method = methods[args.method]
             classifier = method(data)
         else: # classifier
-            classifier = load(args.source)
+            classifier = load_classifier(args.source)
         output_filename = save_classifier(classifier, args.method)
         print(f"Trained classifier saved into file {output_filename}")
     elif args.command == "test": # test
@@ -121,37 +143,19 @@ if args.mode == "research":
             
         else: # supervised, deeplearning
             if args.method in deepLearning:
-                classifier = load_model(f"classifiers/classifier_{args.method}.h5")
+                classifier = load_classifier(f"classifiers/classifier_{args.method}.h5")
                 y_pred = classifier.predict(data["X_test"])
                 y_pred = (y_pred > 0.5)
                 # Invert back to numbers
                 y_pred = np.argmax(y_pred, axis = 1)
             else:
-                classifier = load(f"classifiers/classifier_{args.method}.joblib")
+                classifier = load_classifier(f"classifiers/classifier_{args.method}.joblib")
                 y_pred = classifier.predict(data["X_test"])
                 
             CM = confusion_matrix(data["y_test"], y_pred)
         
-            # TODO print results
-            '''print(f"Accuracy of Machine Learning method {args.method} is", metrics.accuracy)
-            print(f"Precision of Machine Learning method {args.method} is", metrics.precision)
-            print(f"Recall of Machine Learning method {args.method} is", metrics.recall)
-            print(f"F1-Score of Machine Learning method {args.method} is", metrics.f1)'''
+            print_metrics(args.method, data, y_pred)
             
-            
-            # accuracy: (tp + tn) / (p + n)
-            accuracy = accuracy_score(data["y_test"], y_pred)
-            print(f"Accuracy of Machine Learning method {args.method} is", accuracy)
-            # precision tp / (tp + fp)
-            precision = precision_score(data["y_test"], y_pred)
-            print(f"Precision of Machine Learning method {args.method} is", precision)
-            # recall: tp / (tp + fn)
-            recall = recall_score(data["y_test"], y_pred)
-            print(f"Recall of Machine Learning method {args.method} is", recall)
-            # f1: 2 tp / (2 tp + fp + fn)
-            f1 = f1_score(data["y_test"], y_pred)
-            print(f"F-Score of Machine Learning method {args.method} is", f1)
-        
     else: # trainandtest
         if not is_dataset_source(args.source):
                 print(f"{args.source} is not dataset with extension .csv")
@@ -164,20 +168,7 @@ if args.mode == "research":
         
             CM = confusion_matrix(data["y_test"], y_pred)
             
-            # TODO print results
-            
-            # accuracy: (tp + tn) / (p + n)
-            accuracy = accuracy_score(data["y_test"], y_pred)
-            print(f"Accuracy of Machine Learning method {args.method} is", accuracy)
-            # precision tp / (tp + fp)
-            precision = precision_score(data["y_test"], y_pred)
-            print(f"Precision of Machine Learning method {args.method} is", precision)
-            # recall: tp / (tp + fn)
-            recall = recall_score(data["y_test"], y_pred)
-            print(f"Recall of Machine Learning method {args.method} is", recall)
-            # f1: 2 tp / (2 tp + fp + fn)
-            f1 = f1_score(data["y_test"], y_pred)
-            print(f"F1-Score of Machine Learning method {args.method} is", f1)
+            print_metrics(args.method, data, y_pred)
         
         else: # supervised, deeplearning
             data = import_dataset(args.source, split=True)
@@ -193,24 +184,7 @@ if args.mode == "research":
             CM = confusion_matrix(data["y_test"], y_pred)
             
             # TODO print results
-            '''print(f"Accuracy of Machine Learning method {args.method} is", metrics.accuracy)
-            print(f"Precision of Machine Learning method {args.method} is", metrics.precision)
-            print(f"Recall of Machine Learning method {args.method} is", metrics.recall)
-            print(f"F1-Score of Machine Learning method {args.method} is", metrics.f1)'''
-            
-            
-            # accuracy: (tp + tn) / (p + n)
-            accuracy = accuracy_score(data["y_test"], y_pred)
-            print(f"Accuracy of Machine Learning method {args.method} is", accuracy)
-            # precision tp / (tp + fp)
-            precision = precision_score(data["y_test"], y_pred)
-            print(f"Precision of Machine Learning method {args.method} is", precision)
-            # recall: tp / (tp + fn)
-            recall = recall_score(data["y_test"], y_pred)
-            print(f"Recall of Machine Learning method {args.method} is", recall)
-            # f1: 2 tp / (2 tp + fp + fn)
-            f1 = f1_score(data["y_test"], y_pred)
-            print(f"F1-Score of Machine Learning method {args.method} is", f1)
+            print_metrics(args.method, data, y_pred)
             
         """
         ''' Inverting back categorical data '''
@@ -233,7 +207,7 @@ else: # prod
             method = methods[args.method]
             classifier = method(data)
         else: # classifier
-            classifier = load(args.source)
+            classifier = load_classifier(args.source)
         output_filename = save_classifier(classifier, args.method)
         print(f"Trained classifier saved into file {output_filename}")
     elif args.command == "test": # test
@@ -250,22 +224,22 @@ else: # prod
             
         else: # supervised, deeplearning
             if args.method in deepLearning:
-                classifier = load_model(f"classifiers/classifier_{args.method}.h5")
+                classifier = load_classifier(f"classifiers/classifier_{args.method}.h5")
                 y_pred = classifier.predict(data["X_test"])
                 y_pred = (y_pred > 0.5)
                 # Invert back to numbers
                 y_pred = np.argmax(y_pred, axis = 1)
             else:
-                classifier = load(f"classifiers/classifier_{args.method}.joblib")
+                classifier = load_classifier(f"classifiers/classifier_{args.method}.joblib")
                 y_pred = classifier.predict(data["X_test"])
         
             # TODO print to command line
-            '''frames = [data["X_test"], y_pred]
-            labelled_dataset = pd.concat(frames)
+            x_test = data["X_test"]
+            labelled_dataset =np.c_[data["X_test"], y_pred]
             with open(f"Results/{args.method}_labelled.csv", 'w') as f:
                 f.write(np.array2string(labelled_dataset))
                 #f.write(np.array2string(args.method, separator=',', max_line_width=np.inf))
-            print(f"Labelled dataset printed out to Results/{args.method}_labelled.csv")'''
+            print(f"Labelled dataset printed out to Results/{args.method}_labelled.csv")
 
     else: # trainandtest
         print("trainandtest is possible only in research mode")
