@@ -249,13 +249,15 @@ else: # prod
             # TODO print to command line
             
         else: # supervised, deeplearning
-            classifier = load(f"classifiers/classifier_{args.method}.joblib")
-            y_pred = classifier.predict(data["X_test"])
- 
             if args.method in deepLearning:
+                classifier = load_model(f"classifiers/classifier_{args.method}.h5")
+                y_pred = classifier.predict(data["X_test"])
                 y_pred = (y_pred > 0.5)
                 # Invert back to numbers
                 y_pred = np.argmax(y_pred, axis = 1)
+            else:
+                classifier = load(f"classifiers/classifier_{args.method}.joblib")
+                y_pred = classifier.predict(data["X_test"])
         
             # TODO print to command line
             '''frames = [data["X_test"], y_pred]
