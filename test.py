@@ -13,7 +13,7 @@ import ML_modules as ML
 from joblib import dump, load
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-from data_preprocessing import import_dataset
+from data_preprocessing import import_dataset, import_unlabelled_dataset
 from keras.models import load_model
 
 # Create parser
@@ -35,15 +35,17 @@ parser.add_argument("--mode", dest="mode", choices=["research", "prod"], require
 parser.add_argument("--command", dest="command", choices=["train", "test", "trainandtest"], required=True)
 parser.add_argument("--method", dest="method", choices=methods_flags, required=True)
 parser.add_argument("--source", dest="source", required=True)
+# parser.add_argument("--labelled", dest="labelled", choices=["yes", "no"], required=False, default="yes")
 
-args = parser.parse_args(["--mode", "prod", "--method", "kSVM", "--command", "test", "--source", "Datasets\sample_data.csv"])
-#args = parser.parse_args()
+#args = parser.parse_args(["--mode", "prod", "--method", "kSVM", "--command", "test", "--source", "Datasets\sample_data.csv", "--labelled", "yes"])
+args = parser.parse_args()
 
 # TODO remove before publishing
 print(args.command)
 print(args.mode)
 print(args.method)
 print(args.source)
+#print(args.labelled)
 
 def print_metrics(method, data, y_pred):
     # accuracy: (tp + tn) / (p + n)
@@ -110,6 +112,10 @@ def load_classifier(filename):
 methods = {"LR": ML.method_LR, "K-NN": ML.method_KNN, "SVM":  ML.method_SVM, "kSVM":  ML.method_kSVM,
            "NB": ML.method_NB, "DTC":  ML.method_DTC, "RFC":  ML.method_RFC, "K-Means":  ML.method_KMeans,
            "HC": ML.method_HC, "ANN":  ML.method_ANN}
+
+'''if args.labelled == "no" and (args.mode != "prod" or args.command != "test"):
+    print("Dataset needs to be labelled")
+    sys.exit(1)'''
 
 if args.mode == "research":
 
@@ -215,7 +221,7 @@ else: # prod
             print(f"{args.source} is not dataset with extension .csv")
             sys.exit(1)
     
-        data = import_dataset(args.source, split=False)
+        data = import_unlabelled_dataset(args.source) # TODO New import
         if args.method in unsupervised:
             method = methods[args.method]
             y_pred = method(data)
@@ -233,11 +239,17 @@ else: # prod
                 classifier = load_classifier(f"classifiers/classifier_{args.method}.joblib")
                 y_pred = classifier.predict(data["X_test"])
         
+                        
             # TODO print to command line
-            x_test = data["X_test"]
-            labelled_dataset =np.c_[data["X_test"], y_pred]
+            
+            # TODO Label Dataset
+            '''labelled_dataset = np.c_[data["dataset"], y_inverted]
+            np.set_printoptions(threshold=np.inf)
             with open(f"Results/{args.method}_labelled.csv", 'w') as f:
-                f.write(np.array2string(labelled_dataset))
+                for row in labelled_dataset:
+                    r = np.array2string(row, separator=', ', max_line_width=np.inf)
+                    f.write(f"{r[1:-1]}\n")'''
+                #f.write(np.array2string(labelled_dataset, separator=',', max_line_width=np.inf))
                 #f.write(np.array2string(args.method, separator=',', max_line_width=np.inf))
             print(f"Labelled dataset printed out to Results/{args.method}_labelled.csv")
 

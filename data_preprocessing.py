@@ -11,13 +11,46 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
 
-def import_dataset(filename, split):
+def import_unlabelled_dataset(filename):
+    dataset = pd.read_csv(filename)
+    
+    X_test = dataset.iloc[:, list(range(4, 6)) + list(range(7, 84))].values
+
+    # TODO: Standardize this part
+    SUM = 0
+    MAX = 0
+    COUNT = 0
+    
+    for i, row in enumerate(X_test):
+        for j in [15, 16]:
+            sx = str(float(X_test[i,j])).lower()
+            if  (sx != "nan" and sx != "inf"):
+                SUM = SUM + X_test[i,j]
+                if X_test[i,j] > MAX:
+                    MAX = X_test[i,j]
+                COUNT = COUNT + 1
+    
+    AVARAGE = SUM/COUNT
+    
+    for i, row in enumerate(X_test):
+        for j in [15, 16]:
+            sx = str(float(X_test[i,j])).lower()
+            if  sx == "nan":
+                X_test[i, j] = AVARAGE    
+            if  sx == "inf":
+                X_test[i, j] = MAX * 10 # max hodnoty float("inf")
+    
+    return {"X_test": X_test}
+
+def import_dataset(filename, split, separate_y):
     # Importing the dataset
     dataset = pd.read_csv(filename)
     
     # Splitting the dataset into independent and dependent variables
     X = dataset.iloc[:, list(range(4, 6)) + list(range(7, 84))].values
-    y = dataset.iloc[:, 84].values
+    y = dataset.iloc[:, -1].values
+    
+    # TODO Take care of date and time values - encode into timestamps
     
     # Taking care of missing and incorrect data
     # TODO: Standardize this part
@@ -42,7 +75,7 @@ def import_dataset(filename, split):
             if  sx == "nan":
                 X[i, j] = AVARAGE    
             if  sx == "inf":
-                X[i, j] = MAX * 10
+                X[i, j] = MAX * 10 # max hodnoty float("inf")
     
     # Encoding categorical data    
     labelEncoder_y = LabelEncoder()
