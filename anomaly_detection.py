@@ -46,8 +46,8 @@ parser.add_argument("--method", dest="method", choices=methods_flags, required=T
 parser.add_argument("--source", dest="source", required=True)
 # parser.add_argument("--labelled", dest="labelled", choices=["yes", "no"], required=False, default="yes")
 
-#args = parser.parse_args(["--mode", "prod", "--method", "kSVM", "--command", "test", "--source", "Datasets\sample_data.csv", "--labelled", "yes"])
-args = parser.parse_args()
+args = parser.parse_args(["--mode", "prod", "--method", "DTC", "--command", "test", "--source", "Datasets\logs1.csv"])
+#args = parser.parse_args()
 
 # TODO remove before publishing
 print(args.command)
@@ -252,14 +252,14 @@ else: # prod
             # TODO print to command line
             
             # TODO Label Dataset
-            '''labelled_dataset = np.c_[data["dataset"], y_inverted]
+            # TODO Label Anomaly/Not Anomaly
+            labelled_dataset = np.c_[data["dataset"], ["Anomaly" if val else "Not anomaly" for val in y_pred]]
             np.set_printoptions(threshold=np.inf)
             with open(f"Results/{args.method}_labelled.csv", 'w') as f:
                 for row in labelled_dataset:
-                    r = np.array2string(row, separator=', ', max_line_width=np.inf)
-                    f.write(f"{r[1:-1]}\n")'''
-                #f.write(np.array2string(labelled_dataset, separator=',', max_line_width=np.inf))
-                #f.write(np.array2string(args.method, separator=',', max_line_width=np.inf))
+                    row = np.array(list(map(lambda s: s, row)))
+                    r = np.array2string(row, separator='\t ', max_line_width=np.inf, formatter={'str_kind': lambda x: x})
+                    f.write(f"{r[1:-1]}\n")
             print(f"Labelled dataset printed out to Results/{args.method}_labelled.csv")
 
     else: # trainandtest

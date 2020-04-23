@@ -89,7 +89,7 @@ def method_RFC(data):
 def method_KMeans(data):
     from sklearn.cluster import KMeans
     
-    kmeans = KMeans(n_clusters = data["n_labels_y"], init = 'k-means++', random_state = 42)
+    kmeans = KMeans(n_clusters = data["2"], init = 'k-means++', random_state = 42)
     
     # Predicting the Test set results
     y_kmeans = kmeans.fit_predict(data["X"])
@@ -100,7 +100,7 @@ def method_KMeans(data):
 def method_HC(data):
     from sklearn.cluster import AgglomerativeClustering
     
-    hc = AgglomerativeClustering(n_clusters = data["n_labels_y"], affinity = 'euclidean', linkage = 'ward')
+    hc = AgglomerativeClustering(n_clusters = data["2"], affinity = 'euclidean', linkage = 'ward')
     
     # Predicting the Test set results
     y_hc = hc.fit_predict(data["X"])
@@ -125,13 +125,13 @@ def method_ANN(data):
         classifier_ANN.add(Dense(output_dim = 39, init = 'uniform', activation = 'relu'))
     
     # Adding the output layer
-    classifier_ANN.add(Dense(output_dim = data["n_labels_y_train"], init = 'uniform', activation = 'softmax'))
+    classifier_ANN.add(Dense(output_dim = data["2"], init = 'uniform', activation = 'softmax'))
     
     # Compiling the ANN
     classifier_ANN.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
     
     # Fitting the ANN to the Training set
-    classifier_ANN.fit(data["X_train"], data["encoded_y_train"], batch_size = 10, epochs = 10)
+    classifier_ANN.fit(data["X_train"], data["y_train"], batch_size = 10, epochs = 10)
     
     return classifier_ANN
 

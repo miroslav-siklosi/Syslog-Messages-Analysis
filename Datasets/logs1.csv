@@ -1,0 +1,10 @@
+Apr 18 2020 20:18:54 FW02 : %ASA-4-400046: IPS:6154 ypxfrd (YP transfer daemon) Portmap Request 57.207.146.39 to 162.53.141.238 on interface GigabitEthernet0/5
+Apr 18 2020 20:18:54 FW17 : %ASA-6-109007: Authorization permitted for user user10 from 10.174.30.24/4925 to 188.64.139.237/18339 on interface GigabitEthernet0/5.
+Apr 18 2020 20:18:54 FW06 : %ASA-4-405001: Received ARP request collision from 110.132.72.98/1a:e3:a0:ba:62:d0 on interface GigabitEthernet0/3 with existing ARP entry 38.45.66.215/08:1d:58:90:7b:9e.
+Apr 18 2020 20:18:55 FW04 : %ASA-4-209003: Fragment database limit of number exceeded: src = 83.49.73.202 , dest = 213.0.219.100 , proto = TCP , id = 8583
+Apr 18 2020 20:18:55 FW01 : %ASA-4-400041: IPS:6103 Proxied RPC Request from 208.54.118.29 to 13.135.247.6 on interface GigabitEthernet0/2
+Apr 18 2020 20:18:55 FW21 : %ASA-4-400048: IPS:6175 rexd (remote execution daemon) Portmap Request 136.160.65.222 to 83.9.233.217 on interface GigabitEthernet0/2
+Apr 18 2020 20:18:55 FW12 : %ASA-7-710002: TCP access permitted from 37.91.16.108/18960 to GigabitEthernet0/5:104.64.160.221/DHCP
+Apr 18 2020 20:18:56 FW22 : %ASA-4-400016: IPS:2006 ICMP Parameter Problem on Datagram 43.70.95.215 to 213.30.222.133 on interface GigabitEthernet0/0
+Apr 18 2020 20:18:56 FW15 : %ASA-4-400025: IPS:2154 Ping of Death Attack from 72.171.65.91 to 166.140.161.137 on interface GigabitEthernet0/0
+Apr 18 2020 20:18:56 FW07 : %ASA-4-400050: IPS:6190 statd Buffer Overflow from 177.155.59.156 to 181.148.235.162 on interface GigabitEthernet0/5
