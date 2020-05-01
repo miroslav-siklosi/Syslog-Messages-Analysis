@@ -51,7 +51,7 @@ def extract_BoW(syslogs_column):
         syslog = ' '.join(syslog) #merge words back into string
         syslogs.append(syslog) #
         
-    cv = CountVectorizer(max_features = 40)
+    cv = CountVectorizer(max_features = 40) # TODO: Amend this variable
     BagOfWords = cv.fit_transform(syslogs).toarray()
     X = np.c_[dates, BagOfWords]
     
@@ -64,6 +64,7 @@ def import_unlabelled_dataset(filename):
     
     return {"dataset": dataset, "X_test": X_test}
 
+# Method to import labelled dataset
 def import_dataset(filename, split):
     # Importing the dataset
     dataset = pd.read_csv(filename, delimiter = "\t", quoting = 3, header = None, parse_dates = True, names = ["Syslog", "Anomaly"])
