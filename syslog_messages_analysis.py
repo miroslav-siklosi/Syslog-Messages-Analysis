@@ -46,7 +46,7 @@ parser.add_argument("--method", dest="method", choices=methods_flags, required=T
 parser.add_argument("--source", dest="source", required=True)
 # parser.add_argument("--labelled", dest="labelled", choices=["yes", "no"], required=False, default="yes")
 
-args = parser.parse_args(["--mode", "prod", "--method", "DTC", "--command", "test", "--source", "Datasets\logs1.csv"])
+args = parser.parse_args(["--mode", "research", "--method", "DTC", "--command", "test", "--source", "Datasets\logs.csv"])
 #args = parser.parse_args()
 
 # TODO remove before publishing
@@ -70,6 +70,28 @@ def print_metrics(method, data, y_pred):
     f1 = f1_score(data["y_test"], y_pred)
     print(f"F1-Score of Machine Learning method {method} is", f1)
 
+def print_prediction_result(data, y_pred):
+    # [X_test, y_pred] Prediction is correct/Prediction is NOT correct
+    X_test = data["dataset"]["Syslog"]
+    y_test = data['y_test']
+    
+    np.set_printoptions(threshold=np.inf)
+    with open(f"Results/prediction_result.txt", 'w') as f:
+        for i in range(len(X_test)):
+            f.write(f"{X_test[i]} {y_pred[i]}\n")
+            if y_test[i] == y_pred[i]:
+                f.write("Prediction is correct\n")
+            else:
+                 f.write("Prediction is NOT correct\n")
+        '''
+        for row in labelled_dataset:
+            row = np.array(list(map(lambda s: s, row)))
+            r = np.array2string(row, separator='\t ', max_line_width=np.inf, formatter={'str_kind': lambda x: x})
+            f.write(f"{r[1:-1]}\n")
+        '''
+    print(f"Prediction results saved into prediction_result.txt")
+            
+    
 
 supervised = ("LR", "K-NN", "SVM", "kSVM", "NB", "DTC", "RFC")
 unsupervised = ("K-Means", "HC")
@@ -155,6 +177,9 @@ if args.mode == "research":
             CM = confusion_matrix(data["y_test"], y_pred)
             
             # TODO print results
+            print_metrics(args.method, data, y_pred)
+            print_prediction_result(data, y_pred)
+            
             
         else: # supervised, deeplearning
             if args.method in deepLearning:
@@ -170,6 +195,7 @@ if args.mode == "research":
             CM = confusion_matrix(data["y_test"], y_pred)
         
             print_metrics(args.method, data, y_pred)
+            print_prediction_result(data, y_pred)
             
     else: # trainandtest
         if not is_dataset_source(args.source):
@@ -200,6 +226,7 @@ if args.mode == "research":
             
             # TODO print results
             print_metrics(args.method, data, y_pred)
+            
             
         """
         ''' Inverting back categorical data '''
@@ -248,11 +275,7 @@ else: # prod
                 classifier = load_classifier(f"classifiers/classifier_{args.method}.joblib")
                 y_pred = classifier.predict(data["X_test"])
         
-                        
-            # TODO print to command line
             
-            # TODO Label Dataset
-            # TODO Label Anomaly/Not Anomaly
             labelled_dataset = np.c_[data["dataset"], ["Anomaly" if val else "Not anomaly" for val in y_pred]]
             np.set_printoptions(threshold=np.inf)
             with open(f"Results/{args.method}_labelled.csv", 'w') as f:

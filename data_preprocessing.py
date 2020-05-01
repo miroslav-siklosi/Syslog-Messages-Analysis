@@ -17,9 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 # Importing the libraries
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from keras.utils import to_categorical
 import re
 import nltk
 nltk.download('stopwords')
