@@ -1,0 +1,6 @@
+Apr 19 2020 12:30:42 FW06 : %ASA-5-713155: DNS lookup for Primary VPN Server vpn_concentrator successfully resolved after a previous failure. Resetting any Backup Server init.	0
+Apr 19 2020 12:30:42 FW22 : %ASA-4-400036: IPS:6052 DNS Zone Transfer from High Port 199.116.105.213 to 66.189.111.54 on interface GigabitEthernet0/4	0
+Apr 19 2020 12:30:42 FW22 : %ASA-4-400009: IPS:1103 IP Fragments Overlap from 95.252.104.195 to 151.39.178.40 on interface GigabitEthernet0/2	1
+Apr 19 2020 12:30:42 FW09 : %ASA-5-750004: Local: 10.191.123.115:2883 Remote: 76.209.240.192:50905 Username: user15 Sending COOKIE challenge to throttle possible DoS	1
+Apr 19 2020 12:30:43 FW12 : %ASA-4-400016: IPS:2006 ICMP Parameter Problem on Datagram 103.109.145.63 to 199.15.141.189 on interface GigabitEthernet0/0	0
+

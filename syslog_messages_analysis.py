@@ -44,9 +44,9 @@ parser.add_argument("--mode", dest="mode", choices=["research", "prod"], require
 parser.add_argument("--command", dest="command", choices=["train", "test", "trainandtest"], required=True)
 parser.add_argument("--method", dest="method", choices=methods_flags, required=True)
 parser.add_argument("--source", dest="source", required=True)
-# parser.add_argument("--labelled", dest="labelled", choices=["yes", "no"], required=False, default="yes")
+# parser.add_argument("--labelled", dest="labelled", choices=["yes", "no"], required=False, default="yes") # TODO remove before publishing
 
-args = parser.parse_args(["--mode", "research", "--method", "DTC", "--command", "test", "--source", "Datasets\logs.csv"])
+args = parser.parse_args(["--mode", "research", "--method", "DTC", "--command", "test", "--source", "Datasets\logs.csv"]) # TODO remove before publishing
 #args = parser.parse_args()
 
 # TODO remove before publishing
@@ -83,20 +83,11 @@ def print_prediction_result(data, y_pred):
                 f.write("Prediction is correct\n")
             else:
                  f.write("Prediction is NOT correct\n")
-        '''
-        for row in labelled_dataset:
-            row = np.array(list(map(lambda s: s, row)))
-            r = np.array2string(row, separator='\t ', max_line_width=np.inf, formatter={'str_kind': lambda x: x})
-            f.write(f"{r[1:-1]}\n")
-        '''
     print(f"Prediction results saved into prediction_result.txt")
             
-    
-
 supervised = ("LR", "K-NN", "SVM", "kSVM", "NB", "DTC", "RFC")
 unsupervised = ("K-Means", "HC")
 deepLearning = ("ANN")
-
 
 def save_classifier(classifier, method):
     if method in supervised:
@@ -144,6 +135,7 @@ methods = {"LR": ML.method_LR, "K-NN": ML.method_KNN, "SVM":  ML.method_SVM, "kS
            "NB": ML.method_NB, "DTC":  ML.method_DTC, "RFC":  ML.method_RFC, "K-Means":  ML.method_KMeans,
            "HC": ML.method_HC, "ANN":  ML.method_ANN}
 
+# TODO remove before publishing
 '''if args.labelled == "no" and (args.mode != "prod" or args.command != "test"):
     print("Dataset needs to be labelled")
     sys.exit(1)'''
@@ -164,7 +156,8 @@ if args.mode == "research":
             classifier = load_classifier(args.source)
         output_filename = save_classifier(classifier, args.method)
         print(f"Trained classifier saved into file {output_filename}")
-    elif args.command == "test": # test
+    
+	elif args.command == "test": # test
         if not is_dataset_source(args.source):
             print(f"{args.source} is not dataset with extension .csv")
             sys.exit(1)
@@ -174,9 +167,9 @@ if args.mode == "research":
             method = methods[args.method]
             y_pred = method(data)
         
-            CM = confusion_matrix(data["y_test"], y_pred)
-            
-            # TODO print results
+            # Print results
+            print(f"Confusion Matrix of Machine Learning Method {args.method}:")
+            print(confusion_matrix(data["y_test"], y_pred))
             print_metrics(args.method, data, y_pred)
             print_prediction_result(data, y_pred)
             
@@ -192,8 +185,9 @@ if args.mode == "research":
                 classifier = load_classifier(f"classifiers/classifier_{args.method}.joblib")
                 y_pred = classifier.predict(data["X_test"])
                 
-            CM = confusion_matrix(data["y_test"], y_pred)
-        
+            # Print results
+            print(f"Confusion Matrix of Machine Learning Method {args.method}:")
+            print(confusion_matrix(data["y_test"], y_pred))
             print_metrics(args.method, data, y_pred)
             print_prediction_result(data, y_pred)
             
@@ -207,8 +201,9 @@ if args.mode == "research":
             method = methods[args.method]
             y_pred = method(data)
         
-            CM = confusion_matrix(data["y_test"], y_pred)
-            
+            # Print results
+            print(f"Confusion Matrix of Machine Learning Method {args.method}:")
+            print(confusion_matrix(data["y_test"], y_pred))
             print_metrics(args.method, data, y_pred)
         
         else: # supervised, deeplearning
@@ -222,9 +217,9 @@ if args.mode == "research":
                 # Invert back to numbers
                 y_pred = np.argmax(y_pred, axis = 1)
             
-            CM = confusion_matrix(data["y_test"], y_pred)
-            
-            # TODO print results
+            # Print results
+            print(f"Confusion Matrix of Machine Learning Method {args.method}:")
+            print(confusion_matrix(data["y_test"], y_pred))
             print_metrics(args.method, data, y_pred)
             
             
