@@ -51,7 +51,7 @@ def method_kSVM(data):
 
 ''' Naive Bayes '''
 def method_NB(data):
-    from sklearn.naive_bayes import GaussianNB, ComplementNB
+    from sklearn.naive_bayes import GaussianNB
     
     classifier_NB = GaussianNB()
     classifier_NB.fit(data["X_train"], data["y_train"])
@@ -71,7 +71,7 @@ def method_DTC(data):
 def method_RFC(data):
     from sklearn.ensemble import RandomForestClassifier
     
-    classifier_RFC = RandomForestClassifier(n_estimators = 10, criterion = 'entropy', random_state = 0)
+    classifier_RFC = RandomForestClassifier(n_estimators = 50, criterion = 'entropy', random_state = 0)
     classifier_RFC.fit(data["X_train"], data["y_train"])
     
     return classifier_RFC
@@ -110,9 +110,7 @@ def method_LOF(data):
 def method_KMeans(data):
     from sklearn.cluster import KMeans
     
-    kmeans = KMeans(n_clusters = 2, init = 'k-means++', random_state = 42)
-    
-    # Predicting the results
+    kmeans = KMeans(n_clusters = 2, init = 'k-means++', algorithm = 'full', random_state = 42)
     y_pred = kmeans.fit_predict(data["X"])
     
     return y_pred
@@ -122,8 +120,6 @@ def method_HC(data):
     from sklearn.cluster import AgglomerativeClustering
     
     hc = AgglomerativeClustering(n_clusters = 2, affinity = 'euclidean', linkage = 'ward')
-    
-    # Predicting the Test set results
     y_pred = hc.fit_predict(data["X"])
     
     return y_pred
@@ -139,18 +135,18 @@ def method_ANN(data):
     classifier_ANN = Sequential()
     
     # Adding the input layer and the first hidden layer
-    classifier_ANN.add(Dense(output_dim = 39, init = 'uniform', activation = 'relu', input_dim = 79))
+    classifier_ANN.add(Dense(activation="relu", input_dim=200, units=101, kernel_initializer="uniform"))
     
     # Adding the hidden layers
-    h_layers = 1
+    h_layers = 10
     for i in range(h_layers):
-        classifier_ANN.add(Dense(output_dim = 39, init = 'uniform', activation = 'relu'))
+        classifier_ANN.add(Dense(activation="relu", units=101, kernel_initializer="uniform"))
     
     # Adding the output layer
-    classifier_ANN.add(Dense(output_dim = data["2"], init = 'uniform', activation = 'softmax'))
+    classifier_ANN.add(Dense(activation="sigmoid", units=2, kernel_initializer="uniform"))
     
     # Compiling the ANN
-    classifier_ANN.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
+    classifier_ANN.compile(optimizer = 'adam', loss = 'sparse_categorical_crossentropy', metrics = ['accuracy'])
     
     # Fitting the ANN to the Training set
     classifier_ANN.fit(data["X_train"], data["y_train"], batch_size = 10, epochs = 10)
