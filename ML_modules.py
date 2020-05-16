@@ -16,6 +16,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 """
 # Importing the libraries
 
+''' GRID SEARCH '''
+
+
 
 ''' SUPERVISED ALGORITHMS '''
 
@@ -32,7 +35,7 @@ def method_LR(data):
 def method_KNN(data):
     from sklearn.neighbors import KNeighborsClassifier
     
-    classifier_KNN = KNeighborsClassifier(n_neighbors = 5, metric = 'hamming', p = 2)
+    classifier_KNN = KNeighborsClassifier(n_neighbors = 5, metric = 'hamming')
     classifier_KNN.fit(data["X_train"], data["y_train"])
     
     return classifier_KNN
@@ -48,7 +51,7 @@ def method_kSVM(data):
 
 ''' Naive Bayes '''
 def method_NB(data):
-    from sklearn.naive_bayes import GaussianNB
+    from sklearn.naive_bayes import GaussianNB, ComplementNB
     
     classifier_NB = GaussianNB()
     classifier_NB.fit(data["X_train"], data["y_train"])
@@ -82,6 +85,24 @@ def method_ocSVM(data):
     
     ocSVM = OneClassSVM(kernel="rbf")
     y_pred = ocSVM.fit_predict(data["X"])
+    
+    return y_pred
+
+''' Isolation Forest '''
+def method_iF(data):
+    from sklearn.ensemble import IsolationForest
+    
+    iF = IsolationForest(random_state=0)
+    y_pred = iF.fit_predict(data["X"])
+    
+    return y_pred
+
+''' Local Outlier Factor '''
+def method_LOF(data):
+    from sklearn.neighbors import LocalOutlierFactor
+    
+    lof = LocalOutlierFactor(metric = 'hamming')
+    y_pred = lof.fit_predict(data["X"])
     
     return y_pred
 

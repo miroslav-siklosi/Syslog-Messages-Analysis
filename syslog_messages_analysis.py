@@ -35,9 +35,11 @@ methods_flags = (
     "NB",
     "DTC",
     "RFC",
+    "iF",
+    "LOF",
     "K-Means",
     "HC",
-    "ANN",
+    "ANN"    
 )
 
 parser = argparse.ArgumentParser(prog="PROG.py")
@@ -47,7 +49,7 @@ parser.add_argument("--method", dest="method", choices=methods_flags, required=T
 parser.add_argument("--source", dest="source", required=True)
 
 
-args = parser.parse_args(["--mode", "research", "--method", "HC", "--command", "trainandtest", "--source", "Datasets\logs_sample.csv"]) # TODO remove before publishing
+args = parser.parse_args(["--mode", "research", "--method", "NB", "--command", "trainandtest", "--source", "Datasets\logs_sample.csv"]) # TODO remove before publishing
 #args = parser.parse_args(["--mode", "research", "--method", "ocSVM", "--command", "train", "--source", "Datasets\logs_sample.csv"]) # TODO remove before publishing
 #args = parser.parse_args(["--mode", "research", "--method", "ocSVM", "--command", "test", "--source", "Datasets\logs_sample1.csv"]) # TODO remove before publishing
 #args = parser.parse_args()
@@ -60,12 +62,13 @@ print(args.source)
 
 
 supervised = ("LR", "K-NN", "kSVM", "NB", "DTC", "RFC")
-unsupervised = ("ocSVM", "K-Means", "HC")
+unsupervised = ("ocSVM", "iF", "LOF", "K-Means", "HC")
 deepLearning = ("ANN")
 
-methods = {"LR": ML.method_LR, "K-NN": ML.method_KNN, "ocSVM":  ML.method_ocSVM, "kSVM":  ML.method_kSVM,
-           "NB": ML.method_NB, "DTC":  ML.method_DTC, "RFC":  ML.method_RFC, "K-Means":  ML.method_KMeans,
-           "HC": ML.method_HC, "ANN":  ML.method_ANN}
+methods = {"LR": ML.method_LR, "K-NN": ML.method_KNN, "kSVM":  ML.method_kSVM, 
+           "NB": ML.method_NB, "DTC":  ML.method_DTC, "RFC":  ML.method_RFC, 
+           "ocSVM":  ML.method_ocSVM, "iF": ML.method_iF, "LOF": ML.method_LOF, 
+           "K-Means":  ML.method_KMeans, "HC": ML.method_HC, "ANN":  ML.method_ANN}
 
 def print_metrics(method, data, y_pred):
     # accuracy: (tp + tn) / (p + n)
@@ -197,7 +200,7 @@ if args.mode == "research":
             method = methods[args.method]
             y_pred = method(data)
             
-            if args.method == "ocSVM":
+            if args.method == "ocSVM" or "iF":
                 for i, row in enumerate(y_pred):                    
                     if y_pred[i] == 1:
                         y_pred[i] = 0
