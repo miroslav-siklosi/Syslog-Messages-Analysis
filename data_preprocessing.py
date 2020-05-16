@@ -23,25 +23,25 @@ import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
-import datetime
+#import datetime
 from sklearn.feature_extraction.text import CountVectorizer
 
-def extract_date(syslog):
-    match = re.search(r"(\w{3} \d{1,2} \d{4} \d{2}:\d{2}:\d{2})", syslog)
-    date = datetime.datetime.strptime(match.group(1), "%b %d %Y %H:%M:%S")
-    date = date.timestamp()
-    return date
+# def extract_date(syslog):
+#     match = re.search(r"(\w{3} \d{1,2} \d{4} \d{2}:\d{2}:\d{2})", syslog)
+#     date = datetime.datetime.strptime(match.group(1), "%b %d %Y %H:%M:%S")
+#     date = date.timestamp()
+#     return date
 
 def extract_BoW(syslogs_column):
     syslogs = []
-    dates = []
+    #dates = []
     for line in syslogs_column:
         """
         1. Extract date and time, convert into timestamps (MMM DD YYYY HH:MM:SS)
         2. Extract words
         3. Merge [date and time][syslog]
         """
-        dates.append(extract_date(line))    
+        #dates.append(extract_date(line))    
         syslog = re.sub('[^a-zA-Z]', ' ', line) #keep letters and spaces
         syslog = syslog.lower() 
         syslog = syslog.split() #split text into words
@@ -49,9 +49,10 @@ def extract_BoW(syslogs_column):
         syslog = ' '.join(syslog) #merge words back into string
         syslogs.append(syslog) #
         
-    cv = CountVectorizer(max_features = 40) # TODO: Amend this variable
-    BagOfWords = cv.fit_transform(syslogs).toarray()
-    X = np.c_[dates, BagOfWords]
+    cv = CountVectorizer(max_features = 200) # TODO: Amend this variable
+    #X = cv.transform(syslogs).toarray()
+    X = cv.fit_transform(syslogs).toarray()
+    #X = np.c_[dates, BagOfWords]
     
     return X
 
