@@ -25,11 +25,12 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from data_preprocessing import import_dataset, import_unlabelled_dataset
 from keras.models import load_model
 
+
 # Create parser
 methods_flags = (
     "LR",
     "K-NN",
-    "SVM",
+    "ocSVM",
     "kSVM",
     "NB",
     "DTC",
@@ -44,9 +45,11 @@ parser.add_argument("--mode", dest="mode", choices=["research", "prod"], require
 parser.add_argument("--command", dest="command", choices=["train", "test", "trainandtest"], required=True)
 parser.add_argument("--method", dest="method", choices=methods_flags, required=True)
 parser.add_argument("--source", dest="source", required=True)
-# parser.add_argument("--labelled", dest="labelled", choices=["yes", "no"], required=False, default="yes") # TODO remove before publishing
 
-args = parser.parse_args(["--mode", "research", "--method", "DTC", "--command", "test", "--source", "Datasets\logs.csv"]) # TODO remove before publishing
+
+args = parser.parse_args(["--mode", "research", "--method", "HC", "--command", "trainandtest", "--source", "Datasets\logs_sample.csv"]) # TODO remove before publishing
+#args = parser.parse_args(["--mode", "research", "--method", "ocSVM", "--command", "train", "--source", "Datasets\logs_sample.csv"]) # TODO remove before publishing
+#args = parser.parse_args(["--mode", "research", "--method", "ocSVM", "--command", "test", "--source", "Datasets\logs_sample1.csv"]) # TODO remove before publishing
 #args = parser.parse_args()
 
 # TODO remove before publishing
@@ -54,7 +57,15 @@ print(args.command)
 print(args.mode)
 print(args.method)
 print(args.source)
-#print(args.labelled)
+
+
+supervised = ("LR", "K-NN", "kSVM", "NB", "DTC", "RFC")
+unsupervised = ("ocSVM", "K-Means", "HC")
+deepLearning = ("ANN")
+
+methods = {"LR": ML.method_LR, "K-NN": ML.method_KNN, "ocSVM":  ML.method_ocSVM, "kSVM":  ML.method_kSVM,
+           "NB": ML.method_NB, "DTC":  ML.method_DTC, "RFC":  ML.method_RFC, "K-Means":  ML.method_KMeans,
+           "HC": ML.method_HC, "ANN":  ML.method_ANN}
 
 def print_metrics(method, data, y_pred):
     # accuracy: (tp + tn) / (p + n)
@@ -85,10 +96,6 @@ def print_prediction_result(data, y_pred):
                  f.write("Prediction is NOT correct\n")
     print(f"Prediction results saved into prediction_result.txt")
             
-supervised = ("LR", "K-NN", "SVM", "kSVM", "NB", "DTC", "RFC")
-unsupervised = ("K-Means", "HC")
-deepLearning = ("ANN")
-
 def save_classifier(classifier, method):
     if method in supervised:
         output_filename = f"classifiers/classifier_{method}.joblib"
@@ -97,7 +104,6 @@ def save_classifier(classifier, method):
         output_filename = f"classifiers/classifier_{method}.h5"
         classifier.save(output_filename)
     return output_filename
-
 
 def is_dataset_source(filename):
     filename = filename.lower()
@@ -131,15 +137,6 @@ def load_classifier(filename):
         print(f"{filepath} was not found!")
         sys.exit(1)
 
-methods = {"LR": ML.method_LR, "K-NN": ML.method_KNN, "SVM":  ML.method_SVM, "kSVM":  ML.method_kSVM,
-           "NB": ML.method_NB, "DTC":  ML.method_DTC, "RFC":  ML.method_RFC, "K-Means":  ML.method_KMeans,
-           "HC": ML.method_HC, "ANN":  ML.method_ANN}
-
-# TODO remove before publishing
-'''if args.labelled == "no" and (args.mode != "prod" or args.command != "test"):
-    print("Dataset needs to be labelled")
-    sys.exit(1)'''
-
 if args.mode == "research":
 
     if args.command == "train":
@@ -157,7 +154,7 @@ if args.mode == "research":
         output_filename = save_classifier(classifier, args.method)
         print(f"Trained classifier saved into file {output_filename}")
     
-	elif args.command == "test": # test
+    elif args.command == "test": # test
         if not is_dataset_source(args.source):
             print(f"{args.source} is not dataset with extension .csv")
             sys.exit(1)
@@ -171,8 +168,7 @@ if args.mode == "research":
             print(f"Confusion Matrix of Machine Learning Method {args.method}:")
             print(confusion_matrix(data["y_test"], y_pred))
             print_metrics(args.method, data, y_pred)
-            print_prediction_result(data, y_pred)
-            
+            print_prediction_result(data, y_pred)            
             
         else: # supervised, deeplearning
             if args.method in deepLearning:
@@ -200,7 +196,14 @@ if args.mode == "research":
             data = import_dataset(args.source, split=False)
             method = methods[args.method]
             y_pred = method(data)
-        
+            
+            if args.method == "ocSVM":
+                for i, row in enumerate(y_pred):                    
+                    if y_pred[i] == 1:
+                        y_pred[i] = 0
+                    else:
+                        y_pred[i] = 1
+                            
             # Print results
             print(f"Confusion Matrix of Machine Learning Method {args.method}:")
             print(confusion_matrix(data["y_test"], y_pred))
@@ -221,17 +224,7 @@ if args.mode == "research":
             print(f"Confusion Matrix of Machine Learning Method {args.method}:")
             print(confusion_matrix(data["y_test"], y_pred))
             print_metrics(args.method, data, y_pred)
-            
-            
-        """
-        ''' Inverting back categorical data '''
-        # Invert back categories
-        invert_y = np.argmax(data["encoded_y"], axis = 1)
-        invert_y_train = np.argmax(data["encoded_y_train"], axis = 1)        
-        # Invert back labels
-        y_inverted = data["labelEncoder_y"].inverse_transform(invert_y)
-        y_train_inverted = data["labelEncoder_y"].inverse_transform(invert_y_train)
-        """
+
 else: # prod
     if args.command == "train":
         if args.method in unsupervised:
@@ -247,6 +240,7 @@ else: # prod
             classifier = load_classifier(args.source)
         output_filename = save_classifier(classifier, args.method)
         print(f"Trained classifier saved into file {output_filename}")
+    
     elif args.command == "test": # test
         if not is_dataset_source(args.source):
             print(f"{args.source} is not dataset with extension .csv")

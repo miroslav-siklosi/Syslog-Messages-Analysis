@@ -17,13 +17,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 # Importing the libraries
 
 
-''' CLASSIFICATION METHODS '''
+''' SUPERVISED ALGORITHMS '''
 
 ''' Logistic Regression '''
 def method_LR(data):    
     from sklearn.linear_model import LogisticRegression
     
-    classifier_LR = LogisticRegression(random_state = 0)
+    classifier_LR = LogisticRegression(penalty='none', random_state = 0)
     classifier_LR.fit(data["X_train"], data["y_train"])
     
     return classifier_LR
@@ -32,19 +32,10 @@ def method_LR(data):
 def method_KNN(data):
     from sklearn.neighbors import KNeighborsClassifier
     
-    classifier_KNN = KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2)
+    classifier_KNN = KNeighborsClassifier(n_neighbors = 5, metric = 'hamming', p = 2)
     classifier_KNN.fit(data["X_train"], data["y_train"])
     
     return classifier_KNN
-
-''' SVM ''' #This one can take too much time to process
-def method_SVM(data):
-    from sklearn.svm import SVC
-    
-    classifier_SVM = SVC(kernel = 'linear', random_state = 0)
-    classifier_SVM.fit(data["X_train"], data["y_train"])
-    
-    return classifier_SVM
 
 ''' Kernel SVM '''
 def method_kSVM(data):
@@ -83,32 +74,42 @@ def method_RFC(data):
     return classifier_RFC
 
 
-''' CLUSTERING METHODS '''
+''' UNSUPERVISED ALGORITHMS '''
+
+''' One-class SVM '''
+def method_ocSVM(data):
+    from sklearn.svm import OneClassSVM
+    
+    ocSVM = OneClassSVM(kernel="rbf")
+    y_pred = ocSVM.fit_predict(data["X"])
+    
+    return y_pred
 
 ''' K-Means Machine Learning Method '''
 def method_KMeans(data):
     from sklearn.cluster import KMeans
     
-    kmeans = KMeans(n_clusters = data["2"], init = 'k-means++', random_state = 42)
+    kmeans = KMeans(n_clusters = 2, init = 'k-means++', random_state = 42)
     
-    # Predicting the Test set results
-    y_kmeans = kmeans.fit_predict(data["X"])
+    # Predicting the results
+    y_pred = kmeans.fit_predict(data["X"])
     
-    return y_kmeans
+    return y_pred
 
 ''' Hierarchical Clustering '''
 def method_HC(data):
     from sklearn.cluster import AgglomerativeClustering
     
-    hc = AgglomerativeClustering(n_clusters = data["2"], affinity = 'euclidean', linkage = 'ward')
+    hc = AgglomerativeClustering(n_clusters = 2, affinity = 'euclidean', linkage = 'ward')
     
     # Predicting the Test set results
-    y_hc = hc.fit_predict(data["X"])
+    y_pred = hc.fit_predict(data["X"])
     
-    return y_hc
+    return y_pred
 
-''' DEEP LEARNING METHODS '''
-''' ARTIFICAL NEURAL NETWORK METHOD '''
+''' NEURAL NETWORKS '''
+
+''' ARTIFICIAL NEURAL NETWORK METHOD '''
 def method_ANN(data):
     from keras.models import Sequential
     from keras.layers import Dense
