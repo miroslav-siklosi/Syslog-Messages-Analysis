@@ -14,11 +14,6 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 """
-# Importing the libraries
-
-''' GRID SEARCH '''
-
-
 
 ''' SUPERVISED ALGORITHMS '''
 
@@ -84,7 +79,7 @@ def method_ocSVM(data):
     from sklearn.svm import OneClassSVM
     
     ocSVM = OneClassSVM(kernel="rbf")
-    y_pred = ocSVM.fit_predict(data["X"])
+    y_pred = ocSVM.fit_predict(data["X_test"])
     
     return y_pred
 
@@ -93,7 +88,7 @@ def method_iF(data):
     from sklearn.ensemble import IsolationForest
     
     iF = IsolationForest(random_state=0)
-    y_pred = iF.fit_predict(data["X"])
+    y_pred = iF.fit_predict(data["X_test"])
     
     return y_pred
 
@@ -102,7 +97,7 @@ def method_LOF(data):
     from sklearn.neighbors import LocalOutlierFactor
     
     lof = LocalOutlierFactor(metric = 'hamming')
-    y_pred = lof.fit_predict(data["X"])
+    y_pred = lof.fit_predict(data["X_test"])
     
     return y_pred
 
@@ -111,7 +106,7 @@ def method_KMeans(data):
     from sklearn.cluster import KMeans
     
     kmeans = KMeans(n_clusters = 2, init = 'k-means++', algorithm = 'full', random_state = 42)
-    y_pred = kmeans.fit_predict(data["X"])
+    y_pred = kmeans.fit_predict(data["X_test"])
     
     return y_pred
 
@@ -120,7 +115,7 @@ def method_HC(data):
     from sklearn.cluster import AgglomerativeClustering
     
     hc = AgglomerativeClustering(n_clusters = 2, affinity = 'euclidean', linkage = 'ward')
-    y_pred = hc.fit_predict(data["X"])
+    y_pred = hc.fit_predict(data["X_test"])
     
     return y_pred
 

@@ -16,44 +16,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 """
 # Importing the libraries
 import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 import re
 import nltk
-nltk.download('stopwords')
+nltk.download('stopwords', quiet=True)
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
-#import datetime
 from sklearn.feature_extraction.text import CountVectorizer
-
-# def extract_date(syslog):
-#     match = re.search(r"(\w{3} \d{1,2} \d{4} \d{2}:\d{2}:\d{2})", syslog)
-#     date = datetime.datetime.strptime(match.group(1), "%b %d %Y %H:%M:%S")
-#     date = date.timestamp()
-#     return date
+from sklearn.feature_extraction import text 
 
 def extract_BoW(syslogs_column):
     syslogs = []
-    #dates = []
-    for line in syslogs_column:
-        """
-        1. Extract date and time, convert into timestamps (MMM DD YYYY HH:MM:SS)
-        2. Extract words
-        3. Merge [date and time][syslog]
-        """
-        #dates.append(extract_date(line))    
-        syslog = re.sub('[^a-zA-Z]', ' ', line) #keep letters and spaces
+    for line in syslogs_column:    
+        syslog = re.sub(r"(?:[0-9a-fA-F]:?){12}", "", line)
+        syslog = re.sub('[^a-zA-Z]', ' ', syslog) #keep letters and spaces
         syslog = syslog.lower() 
         syslog = syslog.split() #split text into words
         syslog = [PorterStemmer().stem(word) for word in syslog if not word in set(stopwords.words('english'))] #PS - keep to root of the words
         syslog = ' '.join(syslog) #merge words back into string
         syslogs.append(syslog) #
-        
-    cv = CountVectorizer(max_features = 200) # TODO: Amend this variable
-    #X = cv.transform(syslogs).toarray()
-    X = cv.fit_transform(syslogs).toarray()
-    #X = np.c_[dates, BagOfWords]
     
+    stop_words = text.ENGLISH_STOP_WORDS.union({"asa", "fw"})
+    cv = CountVectorizer(max_features = 200, stop_words = stop_words)
+    X = cv.fit_transform(syslogs).toarray()
     return X
 
 def import_unlabelled_dataset(filename):
