@@ -46,15 +46,15 @@ models_flags = (
 
 parser = argparse.ArgumentParser(prog="PROG.py")
 parser.add_argument("--mode", dest="mode", choices=["research", "prod"], required=True)
-parser.add_argument("--command", dest="command", choices=["train", "test", "trainandtest"], required=True)
+parser.add_argument("--command", dest="command", choices=["train", "predict", "trainandpredict"], required=True)
 parser.add_argument("--model", dest="model", choices=models_flags, required=True)
 parser.add_argument("--source", dest="source", required=True)
 
 
-#args = parser.parse_args(["--mode", "research", "--model", "HC", "--command", "trainandtest", "--source", "Datasets\logs_sample.csv"]) # TODO remove before publishing
+#args = parser.parse_args(["--mode", "research", "--model", "HC", "--command", "trainandpredict", "--source", "Datasets\logs_sample.csv"]) # TODO remove before publishing
 #args = parser.parse_args(["--mode", "research", "--model", "LR", "--command", "train", "--source", "Datasets\logs_sample.csv"]) # TODO remove before publishing
-#args = parser.parse_args(["--mode", "research", "--model", "LR", "--command", "test", "--source", "Datasets\logs_sample1.csv"]) # TODO remove before publishing
-#args = parser.parse_args(["--mode", "prod", "--model", "iF", "--command", "test", "--source", "Datasets\logs_sample2.csv"]) # TODO remove before publishing
+#args = parser.parse_args(["--mode", "research", "--model", "LR", "--command", "predict", "--source", "Datasets\logs_sample1.csv"]) # TODO remove before publishing
+#args = parser.parse_args(["--mode", "prod", "--model", "iF", "--command", "predict", "--source", "Datasets\logs_sample2.csv"]) # TODO remove before publishing
 args = parser.parse_args()
 
 # TODO remove before publishing
@@ -205,7 +205,7 @@ if args.mode == "research":
         output_filename = save_classifier(classifier, args.model)
         print(f"Trained classifier saved into file {output_filename}")
     
-    elif args.command == "test": # test
+    elif args.command == "predict": # predict
         if not is_dataset_source(args.source):
             print(f"{args.source} is not dataset with extension .csv")
             sys.exit(1)
@@ -245,7 +245,7 @@ if args.mode == "research":
             print_metrics(args.model, data, y_pred)
             print_prediction_result(data, y_pred)
             
-    else: # trainandtest
+    else: # trainandpredict
         if not is_dataset_source(args.source):
                 print(f"{args.source} is not dataset with extension .csv")
                 sys.exit(1)
@@ -302,7 +302,7 @@ else: # prod
         output_filename = save_classifier(classifier, args.model)
         print(f"Trained classifier saved into file {output_filename}")
     
-    elif args.command == "test": # test
+    elif args.command == "predict": # predict
         if not is_dataset_source(args.source):
             print(f"{args.source} is not dataset with extension .csv")
             sys.exit(1)
@@ -339,6 +339,6 @@ else: # prod
                 f.write(f"{r[1:-1]}\n")
         print(f"Labelled dataset printed out to Results/{args.model}_labelled.csv")
 
-    else: # trainandtest
-        print("trainandtest is possible only in research mode")
+    else: # trainandpredict
+        print("Train and predict is possible only in research mode")
         sys.exit(1)
