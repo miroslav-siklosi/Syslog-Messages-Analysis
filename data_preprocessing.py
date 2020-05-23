@@ -28,22 +28,24 @@ from sklearn.feature_extraction import text
 def extract_BoW(syslogs_column):
     syslogs = []
     for line in syslogs_column:    
-        syslog = re.sub(r"(?:[0-9a-fA-F]:?){12}", "", line)
-        syslog = re.sub('[^a-zA-Z]', ' ', syslog) #keep letters and spaces
+        syslog = re.sub(r"(?:[0-9a-fA-F]:?){12}", "", line) # remove MAC Addresses
+        syslog = re.sub('[^a-zA-Z]', ' ', syslog) # keep letters and spaces
         syslog = syslog.lower() 
-        syslog = syslog.split() #split text into words
-        syslog = [PorterStemmer().stem(word) for word in syslog if not word in set(stopwords.words('english'))] #PS - keep to root of the words
-        syslog = ' '.join(syslog) #merge words back into string
-        syslogs.append(syslog) #
+        syslog = syslog.split() # split text into words
+        syslog = [PorterStemmer().stem(word) for word in syslog if not word in set(stopwords.words('english'))] # PS - keep to root of the words
+        syslog = ' '.join(syslog) # merge words back into string
+        syslogs.append(syslog) 
     
-    stop_words = text.ENGLISH_STOP_WORDS.union({"asa", "fw"})
-    cv = CountVectorizer(max_features = 200, stop_words = stop_words)
+    stop_words = text.ENGLISH_STOP_WORDS.union({"asa", "fw"}) # remove asa and fw from BoW
+    cv = CountVectorizer(max_features = 200, stop_words = stop_words) # consider only 200 most used words
     X = cv.fit_transform(syslogs).toarray()
     return X
 
 def import_unlabelled_dataset(filename):
-    
+    # Importing the dataset
     dataset = pd.read_csv(filename, delimiter = "\t", quoting = 3, header = None, parse_dates = True, names = ["Syslog"])
+    
+    # Calling method BoW to create matrix X
     X_test = extract_BoW(dataset["Syslog"])
     
     return {"dataset": dataset, "X_test": X_test}

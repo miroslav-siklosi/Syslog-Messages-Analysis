@@ -19,14 +19,11 @@ import sys
 import numpy as np
 import ML_modules as ML
 from joblib import dump, load
-from sklearn import neighbors, ensemble, decomposition, datasets
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from data_preprocessing import import_dataset, import_unlabelled_dataset
 from keras.models import load_model
-from time import time
-import matplotlib.pyplot as plt
-from matplotlib import offsetbox
+
 
 # Create parser
 models_flags = (
@@ -101,52 +98,7 @@ def print_prediction_result(data, y_pred):
             else:
                  f.write("Prediction is NOT correct\n")
     print(f"Prediction results saved into prediction_result.txt")
-   
-# def plot_embedding(data, title=None):
-#     digits = datasets.load_digits(n_class=6)
-    
-#     print(data["X_test"])
-#     x_min, x_max = np.min(data["X_test"], 0), np.max(data["X_test"], 0)
-#     X = (data["X_test"] - x_min) / (x_max - x_min)
-
-#     plt.figure()
-#     ax = plt.subplot(111)
-#     for i in range(X.shape[0]):
-#         plt.text(X[i, 0], X[i, 1], str(data["y_pred[i]"]),
-#                  color=plt.cm.Set1(data["y_pred[i]"] / 10.),
-#                  fontdict={'weight': 'bold', 'size': 9})
-
-#     if hasattr(offsetbox, 'AnnotationBbox'):
-#         # only print thumbnails with matplotlib > 1.0
-#         shown_images = np.array([[1., 1.]])  # just something big
-#         for i in range(X.shape[0]):
-#             dist = np.sum((X[i] - shown_images) ** 2, 1)
-#             if np.min(dist) < 4e-3:
-#                 # don't show points that are too close
-#                 continue
-#             shown_images = np.r_[shown_images, [X[i]]]
-#             imagebox = offsetbox.AnnotationBbox(
-#                 offsetbox.OffsetImage(digits.images[i], cmap=plt.cm.gray_r),
-#                 X[i])
-#             ax.add_artist(imagebox)
-#     plt.xticks([]), plt.yticks([])
-#     if title is not None:
-#         plt.title(title)
-        
-# def plot_graph(data):
-#     print("Computing Totally Random Trees embedding")
-#     hasher = ensemble.RandomTreesEmbedding(n_estimators=200, random_state=0,
-#                                            max_depth=5)
-#     t0 = time()
-#     X_transformed = hasher.fit_transform(data["X_test"])
-#     pca = decomposition.TruncatedSVD(n_components=2)
-#     X_reduced = pca.fit_transform(X_transformed)
-    
-#     plot_embedding(X_reduced,
-#                    "Random forest embedding of the digits (time %.2fs)" %
-#                    (time() - t0))
-
-               
+              
 def save_classifier(classifier, model):
     if model in supervised:
         output_filename = f"classifiers/classifier_{model}.joblib"
@@ -220,13 +172,7 @@ if args.mode == "research":
                     if y_pred[i] == 1:
                         y_pred[i] = 0
                     else:
-                        y_pred[i] = 1
-        
-            # Print results
-            print(f"Confusion Matrix of Machine Learning model {args.model}:")
-            print(confusion_matrix(data["y_test"], y_pred))
-            print_metrics(args.model, data, y_pred)
-            print_prediction_result(data, y_pred)            
+                        y_pred[i] = 1       
             
         else: # supervised, deeplearning
             if args.model in deepLearning:
@@ -239,11 +185,11 @@ if args.mode == "research":
                 classifier = load_classifier(f"classifiers/classifier_{args.model}.joblib")
                 y_pred = classifier.predict(data["X_test"])
                 
-            # Print results
-            print(f"Confusion Matrix of Machine Learning model {args.model}:")
-            print(confusion_matrix(data["y_test"], y_pred))
-            print_metrics(args.model, data, y_pred)
-            print_prediction_result(data, y_pred)
+        # Print results
+        print(f"Confusion Matrix of Machine Learning model {args.model}:")
+        print(confusion_matrix(data["y_test"], y_pred))
+        print_metrics(args.model, data, y_pred)
+        print_prediction_result(data, y_pred)
             
     else: # trainandpredict
         if not is_dataset_source(args.source):
@@ -261,13 +207,6 @@ if args.mode == "research":
                         y_pred[i] = 0
                     else:
                         y_pred[i] = 1
-                            
-            # Print results
-            print(f"Confusion Matrix of Machine Learning model {args.model}:")
-            print(confusion_matrix(data["y_test"], y_pred))
-            print_metrics(args.model, data, y_pred)
-            print_prediction_result(data, y_pred)
-            # plot_graph(data)
         
         else: # supervised, deeplearning
             data = import_dataset(args.source, split=True)
@@ -280,11 +219,10 @@ if args.mode == "research":
                 # Invert back to numbers
                 y_pred = np.argmax(y_pred, axis = 1)
             
-            # Print results
-            print(f"Confusion Matrix of Machine Learning model {args.model}:")
-            print(confusion_matrix(data["y_test"], y_pred))
-            print_metrics(args.model, data, y_pred)
-            print_prediction_result(data, y_pred)
+        # Print results
+        print(f"Confusion Matrix of Machine Learning model {args.model}:")
+        print(confusion_matrix(data["y_test"], y_pred))
+        print_metrics(args.model, data, y_pred)
 
 else: # prod
     if args.command == "train":
