@@ -1,0 +1,200 @@
+May 17 2020 11:50:41 FW00 : %ASA-4-400039: IPS:6101 RPC Port Unregistration 128.89.107.14 to 15.50.70.183 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:42 FW20 : %ASA-4-400039: IPS:6101 RPC Port Unregistration 26.194.219.128 to 62.7.202.91 on interface GigabitEthernet0/2	0
+May 17 2020 11:50:42 FW22 : %ASA-3-319001: Acknowledge for arp update for IP address 54.131.40.246 not received.	0
+May 17 2020 11:50:42 FW04 : %ASA-6-302033: Pre-allocated H323 GUP Connection for faddr GigabitEthernet0/0: 159.8.246.145/21855 to laddr GigabitEthernet0/5: 192.168.78.115/55316	0
+May 17 2020 11:50:42 FW02 : %ASA-4-400045: IPS:6153 ypupdated (YP update daemon) Portmap Request 53.198.13.60 to 211.139.178.91 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:42 FW12 : %ASA-3-212003: Unable to receive an SNMP request on interface GigabitEthernet0/2 , error code = Not responding , will try again.	0
+May 17 2020 11:50:42 FW07 : %ASA-5-713155: DNS lookup for Primary VPN Server vpn_concentrator successfully resolved after a previous failure. Resetting any Backup Server init.	0
+May 17 2020 11:50:42 FW09 : %ASA-6-611101: User authentication succeeded: IP, 215.135.150.195 : Uname: user6	0
+May 17 2020 11:50:42 FW04 : %ASA-1-101001: (Primary) Failover cable OK.	0
+May 17 2020 11:50:42 FW01 : %ASA-4-400000: IPS:1000 IP options-Bad Option List from 99.176.69.13 to 214.99.129.65 on interface GigabitEthernet0/3	0
+May 17 2020 11:50:43 FW04 : %ASA-4-716022: Unable to connect to proxy server.	0
+May 17 2020 11:50:43 FW05 : %ASA-4-400005: IPS:1005 IP options-SATNET ID 122.86.101.31 to 185.183.204.174 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:43 FW12 : %ASA-6-605005: Login permitted from 112.29.25.16/37440 to GigabitEthernet0/2:206.49.3.219/SMTP for user user2	0
+May 17 2020 11:50:43 FW25 : %ASA-4-411001: Line protocol on interface GigabitEthernet0/0 changed state to up	0
+May 17 2020 11:50:43 FW15 : %ASA-7-718021: Sent KEEPALIVE response to 45.41.148.179	0
+May 17 2020 11:50:43 FW07 : %ASA-5-611103: User logged out: Uname: user17	0
+May 17 2020 11:50:43 FW00 : %ASA-4-400000: IPS:1000 IP options-Bad Option List from 6.177.242.76 to 88.6.197.89 on interface GigabitEthernet0/3	0
+May 17 2020 11:50:43 FW12 : %ASA-6-303002: FTP connection from GigabitEthernet0/1:85.185.64.241/3975 to GigabitEthernet0/1: 164.109.100.80/64628 , user user3 action file filename	0
+May 17 2020 11:50:43 FW00 : %ASA-4-400000: IPS:1000 IP options-Bad Option List from 218.5.112.35 to 154.245.8.42 on interface GigabitEthernet0/4	0
+May 17 2020 11:50:44 FW12 : %ASA-6-302033: Pre-allocated H323 GUP Connection for faddr GigabitEthernet0/3: 198.237.28.2/28694 to laddr GigabitEthernet0/1: 172.29.106.46/18295	0
+May 17 2020 11:50:44 FW05 : %ASA-5-502111: New group policy added: name: acl_int Type: internal	0
+May 17 2020 11:50:44 FW02 : %ASA-7-718021: Sent KEEPALIVE response to 166.238.45.25	0
+May 17 2020 11:50:44 FW00 : %ASA-4-400040: IPS:6102 RPC Dump 174.161.253.187 to 153.50.169.136 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:44 FW21 : %ASA-4-400040: IPS:6102 RPC Dump 21.127.219.110 to 200.228.185.217 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:44 FW20 : %ASA-6-303002: FTP connection from GigabitEthernet0/1:192.172.83.147/38184 to GigabitEthernet0/4: 57.229.240.172/46723 , user user12 action file filename	0
+May 17 2020 11:50:45 FW07 : %ASA-5-502111: New group policy added: name: acl_int Type: internal	0
+May 17 2020 11:50:45 FW23 : %ASA-7-718021: Sent KEEPALIVE response to 36.67.162.198	0
+May 17 2020 11:50:45 FW01 : %ASA-5-611103: User logged out: Uname: user15	0
+May 17 2020 11:50:45 FW18 : %ASA-4-411004: Configuration status on interface GigabitEthernet0/4 changed state to up	0
+May 17 2020 11:50:45 FW21 : %ASA-6-303002: FTP connection from GigabitEthernet0/2:195.117.127.146/27096 to GigabitEthernet0/0: 221.68.72.59/48430 , user user1 action file filename	0
+May 17 2020 11:50:45 FW05 : %ASA-4-400015: IPS:2005 ICMP Time Exceeded for a Datagram 194.51.254.218 to 212.68.182.118 on interface GigabitEthernet0/3	0
+May 17 2020 11:50:45 FW13 : %ASA-4-400016: IPS:2006 ICMP Parameter Problem on Datagram 167.44.217.14 to 95.141.15.71 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:45 FW21 : %ASA-4-400022: IPS:2012 ICMP Address Mask Reply 159.38.170.46 to 148.190.249.116 on interface GigabitEthernet0/3	0
+May 17 2020 11:50:46 FW13 : %ASA-7-713052: User user17 authenticated.	0
+May 17 2020 11:50:46 FW20 : %ASA-6-109001: Auth start for user user11 from 172.28.20.253/37343 to 216.121.222.184/20222	0
+May 17 2020 11:50:46 FW10 : %ASA-4-400034: IPS:6050 DNS HINFO Request 210.105.133.238 to 215.100.103.122 on interface GigabitEthernet0/2	0
+May 17 2020 11:50:46 FW16 : %ASA-4-733102: Threat-detection adds host 26.74.161.200 to shun list	1
+May 17 2020 11:50:46 FW23 : %ASA-1-104500: (Secondary) Switching to ACTIVE (cause: reason)	0
+May 17 2020 11:50:46 FW23 : %ASA-4-400040: IPS:6102 RPC Dump 122.95.46.175 to 97.55.7.65 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:46 FW08 : %ASA-4-400037: IPS:6053 DNS Request for All Records 54.182.78.192 to 143.19.174.11 on interface GigabitEthernet0/4	0
+May 17 2020 11:50:46 FW05 : %ASA-4-400014: IPS:2004 ICMP Echo Request 156.113.116.10 to 16.237.55.81 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:47 FW11 : %ASA-4-400045: IPS:6153 ypupdated (YP update daemon) Portmap Request 73.30.187.241 to 102.117.154.71 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:47 FW15 : %ASA-5-502111: New group policy added: name: acl_int Type: internal	0
+May 17 2020 11:50:47 FW19 : %ASA-4-400030: IPS:3154 FTP Improper Port Specified from 111.145.65.156 to 155.52.186.209 on interface GigabitEthernet0/3	1
+May 17 2020 11:50:47 FW03 : %ASA-4-400016: IPS:2006 ICMP Parameter Problem on Datagram 222.170.75.25 to 164.228.166.199 on interface GigabitEthernet0/4	0
+May 17 2020 11:50:47 FW15 : %ASA-4-411001: Line protocol on interface GigabitEthernet0/3 changed state to up	0
+May 17 2020 11:50:47 FW20 : %ASA-4-733100: ACL drop drop rate 1 exceeded. Current burst rate is 50 per second, max configured rate is 800 ; Current average rate is 3510 per second, max configured rate is 1000 ; Cumulative total count is 7687574	1
+May 17 2020 11:50:47 FW18 : %ASA-4-507002: Data copy in proxy-mode exceeded the buffer limit	0
+May 17 2020 11:50:47 FW21 : %ASA-5-502111: New group policy added: name: acl_int Type: internal	0
+May 17 2020 11:50:47 FW12 : %ASA-4-400039: IPS:6101 RPC Port Unregistration 43.35.19.158 to 153.34.42.95 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:47 FW02 : %ASA-6-303002: FTP connection from GigabitEthernet0/5:198.29.172.202/30029 to GigabitEthernet0/5: 15.160.195.253/52418 , user user18 action file filename	0
+May 17 2020 11:50:48 FW15 : %ASA-4-400005: IPS:1005 IP options-SATNET ID 189.74.95.248 to 196.54.79.165 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:48 FW14 : %ASA-4-400049: IPS:6180 rexd (remote execution daemon) Attempt 122.80.219.177 to 210.51.18.118 on interface GigabitEthernet0/3	0
+May 17 2020 11:50:48 FW24 : %ASA-4-400005: IPS:1005 IP options-SATNET ID 54.50.88.9 to 66.43.227.93 on interface GigabitEthernet0/3	0
+May 17 2020 11:50:48 FW12 : %ASA-4-400034: IPS:6050 DNS HINFO Request 123.166.187.12 to 206.97.246.142 on interface GigabitEthernet0/5	0
+May 17 2020 11:50:48 FW10 : %ASA-4-507002: Data copy in proxy-mode exceeded the buffer limit	0
+May 17 2020 11:50:48 FW10 : %ASA-5-718010: Sent HELLO response to 85.14.167.223	0
+May 17 2020 11:50:49 FW03 : %ASA-4-400015: IPS:2005 ICMP Time Exceeded for a Datagram 119.206.144.121 to 192.66.69.195 on interface GigabitEthernet0/4	0
+May 17 2020 11:50:49 FW21 : %ASA-4-401001: Shuns cleared	0
+May 17 2020 11:50:49 FW08 : %ASA-6-605005: Login permitted from 121.220.168.2/40303 to GigabitEthernet0/1:4.220.96.190/NTP for user user12	0
+May 17 2020 11:50:49 FW14 : %ASA-4-400034: IPS:6050 DNS HINFO Request 47.186.139.207 to 84.246.219.67 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:49 FW13 : %ASA-3-304003: URL Server 149.116.211.126 timed out URL https://www.flores.com/	0
+May 17 2020 11:50:49 FW09 : %ASA-4-400047: IPS:6155 mountd (mount daemon) Portmap Request 65.64.222.129 to 215.212.158.74 on interface GigabitEthernet0/3	0
+May 17 2020 11:50:50 FW08 : %ASA-4-400021: IPS:2011 ICMP Address Mask Request 134.98.70.99 to 70.49.225.242 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:50 FW11 : %ASA-4-400046: IPS:6154 ypxfrd (YP transfer daemon) Portmap Request 213.88.137.224 to 126.147.131.242 on interface GigabitEthernet0/4	0
+May 17 2020 11:50:50 FW03 : %ASA-4-400000: IPS:1000 IP options-Bad Option List from 15.163.116.221 to 40.101.237.198 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:50 FW20 : %ASA-7-713052: User user14 authenticated.	0
+May 17 2020 11:50:50 FW15 : %ASA-3-318109: OSPFv3 has received an unexpected message	0
+May 17 2020 11:50:50 FW01 : %ASA-7-713052: User user11 authenticated.	0
+May 17 2020 11:50:50 FW13 : %ASA-4-400047: IPS:6155 mountd (mount daemon) Portmap Request 50.78.212.240 to 78.152.149.167 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:50 FW09 : %ASA-7-718023: Received KEEPALIVE response from 181.0.14.150	0
+May 17 2020 11:50:50 FW05 : %ASA-5-502111: New group policy added: name: acl_int Type: internal	0
+May 17 2020 11:50:50 FW16 : %ASA-4-733100: Bad pkts drop rate 1 exceeded. Current burst rate is 1 per second, max configured rate is 400 ; Current average rate is 760 per second, max configured rate is 100 ; Cumulative total count is 1938933	1
+May 17 2020 11:50:50 FW20 : %ASA-4-400010: IPS:2000 ICMP Echo Reply 150.171.31.20 to 47.227.61.14 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:51 FW03 : %ASA-3-304003: URL Server 178.206.229.22 timed out URL http://snyder.com/	0
+May 17 2020 11:50:51 FW19 : %ASA-4-507002: Data copy in proxy-mode exceeded the buffer limit	0
+May 17 2020 11:50:51 FW15 : %ASA-4-400000: IPS:1000 IP options-Bad Option List from 134.195.11.29 to 10.208.152.180 on interface GigabitEthernet0/3	0
+May 17 2020 11:50:51 FW22 : %ASA-4-401001: Shuns cleared	0
+May 17 2020 11:50:51 FW07 : %ASA-4-411004: Configuration status on interface GigabitEthernet0/5 changed state to up	0
+May 17 2020 11:50:51 FW03 : %ASA-4-400005: IPS:1005 IP options-SATNET ID 3.54.94.31 to 162.95.151.70 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:51 FW03 : %ASA-6-109001: Auth start for user user11 from 192.168.10.111/32600 to 220.104.166.61/31542	0
+May 17 2020 11:50:52 FW03 : %ASA-4-400036: IPS:6052 DNS Zone Transfer from High Port 155.49.166.132 to 223.41.191.220 on interface GigabitEthernet0/3	0
+May 17 2020 11:50:52 FW22 : %ASA-5-502111: New group policy added: name: acl_int Type: internal	0
+May 17 2020 11:50:52 FW19 : %ASA-6-302033: Pre-allocated H323 GUP Connection for faddr GigabitEthernet0/1: 197.190.125.127/19220 to laddr GigabitEthernet0/4: 10.207.6.80/45513	0
+May 17 2020 11:50:52 FW11 : %ASA-7-715041: Received keep-alive of type keepalive_type , not the negotiated type	0
+May 17 2020 11:50:52 FW09 : %ASA-4-507002: Data copy in proxy-mode exceeded the buffer limit	0
+May 17 2020 11:50:52 FW04 : %ASA-5-507001: Terminating TCP-Proxy connection from GigabitEthernet0/0:218.105.180.166/6881 to GigabitEthernet0/5:90.218.21.71/21211 - reassembly limit of 156000 bytes exceeded	0
+May 17 2020 11:50:52 FW17 : %ASA-4-400036: IPS:6052 DNS Zone Transfer from High Port 172.154.173.255 to 20.246.115.80 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:52 FW15 : %ASA-3-318107: OSPF is enabled on GigabitEthernet0/4 during idb initialization	0
+May 17 2020 11:50:52 FW05 : %ASA-7-710002: UDP access permitted from 53.149.232.187/60944 to GigabitEthernet0/1:161.77.97.160/NTP	0
+May 17 2020 11:50:53 FW25 : %ASA-5-718016: Received HELLO response from 34.78.252.184	0
+May 17 2020 11:50:53 FW14 : %ASA-4-400015: IPS:2005 ICMP Time Exceeded for a Datagram 75.101.142.138 to 35.85.109.30 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:53 FW04 : %ASA-4-400014: IPS:2004 ICMP Echo Request 13.91.173.149 to 95.76.142.20 on interface GigabitEthernet0/4	0
+May 17 2020 11:50:53 FW06 : %ASA-4-400046: IPS:6154 ypxfrd (YP transfer daemon) Portmap Request 25.125.73.3 to 105.253.106.99 on interface GigabitEthernet0/2	0
+May 17 2020 11:50:53 FW12 : %ASA-4-400021: IPS:2011 ICMP Address Mask Request 46.184.172.49 to 166.24.113.4 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:54 FW11 : %ASA-4-400036: IPS:6052 DNS Zone Transfer from High Port 142.72.115.98 to 7.180.190.174 on interface GigabitEthernet0/4	0
+May 17 2020 11:50:54 FW05 : %ASA-6-605005: Login permitted from 177.184.142.67/65505 to GigabitEthernet0/5:220.96.118.75/SMTP for user user17	0
+May 17 2020 11:50:54 FW15 : %ASA-6-605005: Login permitted from 194.224.204.198/20648 to GigabitEthernet0/1:205.248.178.114/SMTP for user user16	0
+May 17 2020 11:50:54 FW02 : %ASA-7-718021: Sent KEEPALIVE response to 179.90.61.212	0
+May 17 2020 11:50:54 FW22 : %ASA-5-718010: Sent HELLO response to 202.144.159.226	0
+May 17 2020 11:50:54 FW04 : %ASA-4-400045: IPS:6153 ypupdated (YP update daemon) Portmap Request 58.30.97.124 to 95.11.62.93 on interface GigabitEthernet0/4	0
+May 17 2020 11:50:55 FW19 : %ASA-4-400049: IPS:6180 rexd (remote execution daemon) Attempt 68.227.179.81 to 35.145.168.122 on interface GigabitEthernet0/4	0
+May 17 2020 11:50:55 FW23 : %ASA-4-400042: IPS:6150 ypserv (YP server daemon) Portmap Request 205.254.249.22 to 78.141.73.138 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:55 FW24 : %ASA-1-104500: (Secondary) Switching to ACTIVE (cause: reason)	0
+May 17 2020 11:50:55 FW14 : %ASA-7-713164: The Firewall Server has requested a list of active user sessions	0
+May 17 2020 11:50:55 FW13 : %ASA-4-716022: Unable to connect to proxy server.	0
+May 17 2020 11:50:55 FW00 : %ASA-4-400014: IPS:2004 ICMP Echo Request 27.242.59.189 to 34.156.19.220 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:55 FW04 : %ASA-3-212003: Unable to receive an SNMP request on interface GigabitEthernet0/2 , error code = Not responding , will try again.	0
+May 17 2020 11:50:55 FW19 : %ASA-4-400004: IPS:1004 IP options-Loose Source Route 21.34.109.53 to 187.155.26.41 on interface GigabitEthernet0/5	0
+May 17 2020 11:50:55 FW04 : %ASA-1-105003: (Primary) Monitoring on interface GigabitEthernet0/2 waiting	0
+May 17 2020 11:50:55 FW18 : %ASA-5-718010: Sent HELLO response to 110.14.58.255	0
+May 17 2020 11:50:56 FW23 : %ASA-7-715041: Received keep-alive of type keepalive_type , not the negotiated type	0
+May 17 2020 11:50:56 FW25 : %ASA-5-713155: DNS lookup for Primary VPN Server vpn_concentrator successfully resolved after a previous failure. Resetting any Backup Server init.	0
+May 17 2020 11:50:56 FW04 : %ASA-4-400030: IPS:3154 FTP Improper Port Specified from 96.176.77.155 to 196.94.178.73 on interface GigabitEthernet0/5	1
+May 17 2020 11:50:56 FW02 : %ASA-6-303002: FTP connection from GigabitEthernet0/3:38.89.51.95/39441 to GigabitEthernet0/4: 62.39.203.231/22302 , user user8 action file filename	0
+May 17 2020 11:50:56 FW15 : %ASA-4-400012: IPS:2002 ICMP Source Quench 179.105.69.133 to 110.127.38.128 on interface GigabitEthernet0/5	0
+May 17 2020 11:50:56 FW18 : %ASA-7-710002: UDP access permitted from 23.11.245.114/63114 to GigabitEthernet0/1:97.67.42.12/SMTP	0
+May 17 2020 11:50:56 FW12 : %ASA-4-400037: IPS:6053 DNS Request for All Records 30.225.120.53 to 93.211.201.165 on interface GigabitEthernet0/3	0
+May 17 2020 11:50:57 FW25 : %ASA-1-105003: (Primary) Monitoring on interface GigabitEthernet0/4 waiting	0
+May 17 2020 11:50:57 FW21 : %ASA-6-109005: Authentication succeeded for user user17 from 172.16.235.252/61476 to 38.226.201.116/6220 on interface GigabitEthernet0/5.	0
+May 17 2020 11:50:57 FW15 : %ASA-5-611103: User logged out: Uname: user9	0
+May 17 2020 11:50:57 FW10 : %ASA-4-400046: IPS:6154 ypxfrd (YP transfer daemon) Portmap Request 163.243.218.137 to 104.3.208.10 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:57 FW22 : %ASA-4-400016: IPS:2006 ICMP Parameter Problem on Datagram 30.182.76.94 to 175.125.189.28 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:57 FW14 : %ASA-4-400023: IPS:2150 Fragmented ICMP Traffic from 135.43.175.144 to 54.126.176.166 on interface GigabitEthernet0/4	1
+May 17 2020 11:50:57 FW14 : %ASA-1-104502: (Primary) Becoming Backup unit failed.	0
+May 17 2020 11:50:57 FW07 : %ASA-4-507002: Data copy in proxy-mode exceeded the buffer limit	0
+May 17 2020 11:50:57 FW23 : %ASA-6-314004: RTSP client GigabitEthernet0/1: 123.191.60.124 accessed RTSP URL http://www.thomas.com/	0
+May 17 2020 11:50:58 FW15 : %ASA-4-400021: IPS:2011 ICMP Address Mask Request 7.148.158.233 to 23.167.158.165 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:58 FW11 : %ASA-1-105003: (Primary) Monitoring on interface GigabitEthernet0/1 waiting	0
+May 17 2020 11:50:58 FW15 : %ASA-7-713164: The Firewall Server has requested a list of active user sessions	0
+May 17 2020 11:50:58 FW01 : %ASA-5-718016: Received HELLO response from 68.237.23.48	0
+May 17 2020 11:50:58 FW12 : %ASA-3-319002: Acknowledge for route update for IP address 170.177.32.97 not received.	0
+May 17 2020 11:50:58 FW10 : %ASA-5-507001: Terminating TCP-Proxy connection from GigabitEthernet0/4:58.200.242.231/22875 to GigabitEthernet0/3:133.201.217.26/34575 - reassembly limit of 156000 bytes exceeded	0
+May 17 2020 11:50:58 FW07 : %ASA-4-400005: IPS:1005 IP options-SATNET ID 191.185.109.158 to 36.85.247.149 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:58 FW20 : %ASA-4-716022: Unable to connect to proxy server.	0
+May 17 2020 11:50:58 FW10 : %ASA-3-319001: Acknowledge for arp update for IP address 198.228.72.25 not received.	0
+May 17 2020 11:50:58 FW24 : %ASA-3-318109: OSPFv3 has received an unexpected message	0
+May 17 2020 11:50:58 FW08 : %ASA-4-400020: IPS:2010 ICMP Information Reply 6.103.138.201 to 55.33.148.20 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:59 FW19 : %ASA-6-303002: FTP connection from GigabitEthernet0/4:137.143.44.95/12143 to GigabitEthernet0/2: 141.134.21.105/26622 , user user5 action file filename	0
+May 17 2020 11:50:59 FW20 : %ASA-4-400013: IPS:2003 ICMP Redirect 145.50.202.196 to 87.221.123.196 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:59 FW07 : %ASA-4-400047: IPS:6155 mountd (mount daemon) Portmap Request 196.90.80.154 to 68.8.117.6 on interface GigabitEthernet0/1	0
+May 17 2020 11:50:59 FW22 : %ASA-4-400022: IPS:2012 ICMP Address Mask Reply 29.139.235.166 to 43.11.175.13 on interface GigabitEthernet0/0	0
+May 17 2020 11:50:59 FW08 : %ASA-4-507002: Data copy in proxy-mode exceeded the buffer limit	0
+May 17 2020 11:50:59 FW24 : %ASA-4-400016: IPS:2006 ICMP Parameter Problem on Datagram 111.107.239.130 to 133.227.96.96 on interface GigabitEthernet0/4	0
+May 17 2020 11:51:00 FW10 : %ASA-4-400029: IPS:3153 FTP Improper Address Specified from 157.204.194.0 to 217.196.96.129 on interface GigabitEthernet0/1	1
+May 17 2020 11:51:00 FW11 : %ASA-4-400049: IPS:6180 rexd (remote execution daemon) Attempt 154.194.178.120 to 7.136.74.173 on interface GigabitEthernet0/4	0
+May 17 2020 11:51:00 FW17 : %ASA-4-400017: IPS:2007 ICMP Timestamp Request 96.111.75.73 to 73.174.124.203 on interface GigabitEthernet0/3	0
+May 17 2020 11:51:00 FW00 : %ASA-1-104502: (Primary) Becoming Backup unit failed.	0
+May 17 2020 11:51:00 FW14 : %ASA-5-611103: User logged out: Uname: user15	0
+May 17 2020 11:51:00 FW12 : %ASA-4-411001: Line protocol on interface GigabitEthernet0/0 changed state to up	0
+May 17 2020 11:51:00 FW05 : %ASA-6-302003: Built H245 connection for foreign_address 71.154.207.110/15532 local_address 10.223.188.148 /35641	0
+May 17 2020 11:51:00 FW13 : %ASA-6-611101: User authentication succeeded: IP, 92.174.183.90 : Uname: user13	0
+May 17 2020 11:51:01 FW05 : %ASA-7-715041: Received keep-alive of type keepalive_type , not the negotiated type	0
+May 17 2020 11:51:01 FW02 : %ASA-4-400015: IPS:2005 ICMP Time Exceeded for a Datagram 93.31.175.163 to 178.131.62.21 on interface GigabitEthernet0/4	0
+May 17 2020 11:51:01 FW13 : %ASA-4-400037: IPS:6053 DNS Request for All Records 179.222.73.122 to 34.120.88.6 on interface GigabitEthernet0/1	0
+May 17 2020 11:51:01 FW06 : %ASA-4-400006: IPS:1006 IP options-Strict Source Route 33.226.82.115 to 160.10.74.78 on interface GigabitEthernet0/5	0
+May 17 2020 11:51:01 FW11 : %ASA-4-400015: IPS:2005 ICMP Time Exceeded for a Datagram 27.62.58.246 to 90.87.130.15 on interface GigabitEthernet0/4	0
+May 17 2020 11:51:01 FW12 : %ASA-4-400013: IPS:2003 ICMP Redirect 79.58.63.139 to 33.145.194.105 on interface GigabitEthernet0/5	0
+May 17 2020 11:51:02 FW03 : %ASA-4-400010: IPS:2000 ICMP Echo Reply 220.160.209.53 to 138.74.162.90 on interface GigabitEthernet0/1	0
+May 17 2020 11:51:02 FW21 : %ASA-5-713155: DNS lookup for Primary VPN Server vpn_concentrator successfully resolved after a previous failure. Resetting any Backup Server init.	0
+May 17 2020 11:51:02 FW06 : %ASA-4-400010: IPS:2000 ICMP Echo Reply 52.80.102.82 to 159.222.70.180 on interface GigabitEthernet0/0	0
+May 17 2020 11:51:02 FW16 : %ASA-4-400010: IPS:2000 ICMP Echo Reply 125.143.214.22 to 110.97.140.187 on interface GigabitEthernet0/3	0
+May 17 2020 11:51:02 FW19 : %ASA-4-400034: IPS:6050 DNS HINFO Request 188.0.246.86 to 172.112.91.123 on interface GigabitEthernet0/3	0
+May 17 2020 11:51:02 FW06 : %ASA-6-314004: RTSP client GigabitEthernet0/3: 60.49.89.107 accessed RTSP URL https://www.calhoun.com/	0
+May 17 2020 11:51:03 FW14 : %ASA-6-611101: User authentication succeeded: IP, 45.220.132.38 : Uname: user17	0
+May 17 2020 11:51:03 FW12 : %ASA-6-109005: Authentication succeeded for user user7 from 10.10.122.39/50072 to 215.137.43.223/23763 on interface GigabitEthernet0/2.	0
+May 17 2020 11:51:03 FW10 : %ASA-7-718021: Sent KEEPALIVE response to 73.141.251.10	0
+May 17 2020 11:51:03 FW25 : %ASA-1-104500: (Primary) Switching to ACTIVE (cause: reason)	0
+May 17 2020 11:51:03 FW04 : %ASA-4-400049: IPS:6180 rexd (remote execution daemon) Attempt 95.206.202.150 to 168.252.94.89 on interface GigabitEthernet0/4	0
+May 17 2020 11:51:03 FW11 : %ASA-4-400034: IPS:6050 DNS HINFO Request 105.167.18.39 to 46.223.126.2 on interface GigabitEthernet0/2	0
+May 17 2020 11:51:03 FW01 : %ASA-5-713155: DNS lookup for Primary VPN Server vpn_concentrator successfully resolved after a previous failure. Resetting any Backup Server init.	0
+May 17 2020 11:51:03 FW01 : %ASA-4-400045: IPS:6153 ypupdated (YP update daemon) Portmap Request 29.210.15.29 to 50.104.238.52 on interface GigabitEthernet0/0	0
+May 17 2020 11:51:04 FW18 : %ASA-4-411004: Configuration status on interface GigabitEthernet0/0 changed state to up	0
+May 17 2020 11:51:04 FW03 : %ASA-1-104502: (Primary) Becoming Backup unit failed.	0
+May 17 2020 11:51:04 FW18 : %ASA-4-400034: IPS:6050 DNS HINFO Request 135.230.243.102 to 114.227.96.252 on interface GigabitEthernet0/2	0
+May 17 2020 11:51:04 FW22 : %ASA-1-105003: (Primary) Monitoring on interface GigabitEthernet0/4 waiting	0
+May 17 2020 11:51:04 FW16 : %ASA-1-105003: (Primary) Monitoring on interface GigabitEthernet0/5 waiting	0
+May 17 2020 11:51:04 FW14 : %ASA-4-400014: IPS:2004 ICMP Echo Request 172.172.38.144 to 14.95.20.67 on interface GigabitEthernet0/0	0
+May 17 2020 11:51:04 FW08 : %ASA-4-400020: IPS:2010 ICMP Information Reply 198.187.54.25 to 69.94.148.60 on interface GigabitEthernet0/3	0
+May 17 2020 11:51:04 FW04 : %ASA-3-318109: OSPFv3 has received an unexpected message	0
+May 17 2020 11:51:04 FW12 : %ASA-4-400037: IPS:6053 DNS Request for All Records 170.136.34.166 to 212.23.230.54 on interface GigabitEthernet0/3	0
+May 17 2020 11:51:04 FW05 : %ASA-6-611101: User authentication succeeded: IP, 69.244.222.32 : Uname: user17	0
+May 17 2020 11:51:04 FW19 : %ASA-7-713052: User user9 authenticated.	0
+May 17 2020 11:51:04 FW09 : %ASA-6-302033: Pre-allocated H323 GUP Connection for faddr GigabitEthernet0/0: 190.78.154.25/61209 to laddr GigabitEthernet0/3: 172.24.18.134/26318	0
+May 17 2020 11:51:05 FW18 : %ASA-4-411004: Configuration status on interface GigabitEthernet0/3 changed state to up	0
+May 17 2020 11:51:05 FW11 : %ASA-4-400045: IPS:6153 ypupdated (YP update daemon) Portmap Request 102.23.143.25 to 18.60.61.124 on interface GigabitEthernet0/5	0
+May 17 2020 11:51:05 FW09 : %ASA-6-302033: Pre-allocated H323 GUP Connection for faddr GigabitEthernet0/1: 110.114.2.224/28832 to laddr GigabitEthernet0/3: 192.168.80.190/27106	0
+May 17 2020 11:51:05 FW09 : %ASA-4-411004: Configuration status on interface GigabitEthernet0/4 changed state to up	0
+May 17 2020 11:51:05 FW24 : %ASA-3-318107: OSPF is enabled on GigabitEthernet0/2 during idb initialization	0
+May 17 2020 11:51:05 FW05 : %ASA-4-400046: IPS:6154 ypxfrd (YP transfer daemon) Portmap Request 144.196.196.107 to 35.113.144.216 on interface GigabitEthernet0/3	0
+May 17 2020 11:51:05 FW13 : %ASA-4-401001: Shuns cleared	0
+May 17 2020 11:51:05 FW02 : %ASA-4-733100: Scanning drop rate 1 exceeded. Current burst rate is 10 per second, max configured rate is 10 ; Current average rate is 245 per second, max configured rate is 5 ; Cumulative total count is 147409	1
+May 17 2020 11:51:05 FW10 : %ASA-4-411004: Configuration status on interface GigabitEthernet0/1 changed state to up	0
+May 17 2020 11:51:05 FW19 : %ASA-4-400022: IPS:2012 ICMP Address Mask Reply 223.235.208.116 to 130.80.137.218 on interface GigabitEthernet0/2	0
+May 17 2020 11:51:05 FW03 : %ASA-3-304003: URL Server 130.254.21.208 timed out URL http://wells.com/	0
+May 17 2020 11:51:06 FW14 : %ASA-6-109005: Authentication succeeded for user user6 from 172.16.192.70/53815 to 208.205.117.161/48910 on interface GigabitEthernet0/3.	0
+May 17 2020 11:51:06 FW19 : %ASA-4-400013: IPS:2003 ICMP Redirect 152.66.104.153 to 115.2.64.144 on interface GigabitEthernet0/2	0
+May 17 2020 11:51:06 FW14 : %ASA-4-400045: IPS:6153 ypupdated (YP update daemon) Portmap Request 169.188.222.202 to 101.73.106.142 on interface GigabitEthernet0/4	0
+May 17 2020 11:51:06 FW04 : %ASA-1-101001: (Primary) Failover cable OK.	0
+May 17 2020 11:51:06 FW05 : %ASA-4-400046: IPS:6154 ypxfrd (YP transfer daemon) Portmap Request 171.195.80.88 to 18.42.28.231 on interface GigabitEthernet0/2	0

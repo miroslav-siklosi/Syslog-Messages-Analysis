@@ -14,7 +14,6 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 """
-# Importing the libraries
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import re
@@ -25,6 +24,7 @@ from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction import text 
 
+# Bag of Words Method
 def extract_BoW(syslogs_column):
     syslogs = []
     for line in syslogs_column:    
@@ -41,6 +41,7 @@ def extract_BoW(syslogs_column):
     X = cv.fit_transform(syslogs).toarray()
     return X
 
+# Method for importing unlabelled dataset
 def import_unlabelled_dataset(filename):
     # Importing the dataset
     dataset = pd.read_csv(filename, delimiter = "\t", quoting = 3, header = None, parse_dates = True, names = ["Syslog"])
@@ -50,7 +51,7 @@ def import_unlabelled_dataset(filename):
     
     return {"dataset": dataset, "X_test": X_test}
 
-# Method to import labelled dataset
+# Method for importing labelled dataset
 def import_dataset(filename, split):
     # Importing the dataset
     dataset = pd.read_csv(filename, delimiter = "\t", quoting = 3, header = None, parse_dates = True, names = ["Syslog", "Anomaly"])
